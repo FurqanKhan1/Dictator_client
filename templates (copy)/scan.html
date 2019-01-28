@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %} Add New Scan {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+                    <h1 class="page-header">Add a New Scan</h1>
+					{% if success == 'False' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error }}</div>{% endif %}
+					<div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                     <label><font color="">New Scan</font></label>
+                                </h3>
+                            </div>
+					<div class="panel-body">
+						
+                    <form class="form-horizontal" role="form" method="POST" action="/scan/">
+                        <label for="toExclude"><font color="">Project Information</font></label><br><br>
+                        <!-- Set project name -->
+                        <div class="form-group">
+                            <label for="Project_name" class="col-sm-2 control-label">Project Name</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="Project_name" id="Project_name" placeholder="Project_1" >
+								<font color="red">{{ form.errors.Project_name }}</font>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- CSRF - Yoyo! -->
+                        {% csrf_token %}
+                                
+                            
+                              <div class="form-group">
+                                	<label for="Port_range" class="col-sm-2 control-label">Port Range</label>
+									<div class="col-sm-6">
+                                   <input type="text" name="Port_range" id="Port_range" placeholder="1-20000" class="form-control"></input>
+									<font color="red">{{ form.errors.Port_range }}</font>
+									</div>
+			    				</div>
+                            <div class="form-group">
+                                <label for="Switch" class="col-sm-2 control-label">Switch</label>
+								<div class="col-sm-6">
+                                        <select name="Switch" id="Switch" class="form-control">
+										{% for switch in switches %}
+										 <option value ={{ switch.id }}>{{ switch.name }}</option>
+										{% endfor %}
+										</select>
+								<font color="red">{{ form.errors.Switch}}</font>
+                                </div>
+			    			</div>
+			    			<div class="form-group">
+								<label for="Mode" class="col-sm-2 control-label">Scan Mode</label>
+								<div class="col-sm-6">
+                                 <select id="Mode" name="Mode" class="form-control">
+									<option value="sequential">Sequential</option>
+									<option value="concurrent">Concurrent</option>
+									<option value="sequential_default">Sequetial Default</option>
+								</select>
+								<font color="red">{{ form.errors.Mode }}</font>                   
+                     	       </div>
+			    			</div>
+							<div class="form-group">
+                                <label for="Ip_range" class="col-sm-2 control-label">IP/IP_Range</label>
+                                <div class="col-sm-6">
+                                        <Textarea name="Ip_range" id="Ip_range" placeholder="192.168.179.133,192.168.179.134" rows="16" class="form-control"></Textarea>
+										<font color="red">{{ form.errors.IP_range }}</font>
+		                	</div>
+							</div>
+			            <!-- A neat blue button! -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                	</div>
+					</div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

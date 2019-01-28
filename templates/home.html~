@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content%}
+<div class="col-sm-12 col-md-12 main img-responsive" id="dashboard_areaa" style="background-image: url(/static/img/BH/bg_.jpg);color:white;background-repeat:repeat-y;">
+
+<div>
+    <div class="row"> 
+        <div class="">
+            <h6>Hello {{ request.user.first_name }}</h6>
+			<img src="/static/img/BH/{{ image }}.jpg" class="img-responsive img-thumbnail" align="right" style="width:20%;height:30%"></img>
+		</div>
+		<div class="table-responsive">
+			<p>You are on your Dashboard</p>
+			<table class="table table-borderless" style="color:white">
+			<tr>
+			<th>My Info </th>
+			</tr>
+			<tr>
+			<td></td></tr><tr>
+			<td class="col-sm-1">Name</td><td class="col-sm-2">{{ request.user.first_name }} </td></tr><tr>
+			<td class="col-sm-2">Email</td><td class="col-sm-2">{{ request.user.email }}</td></tr><tr>
+			<td class="col-sm-6">Plain Text Password</td><td class="col-sm-6"><a href="#password" data-toggle="collapse"><font color="white">Click To 0pen</font></a><div id="password" class="collapse"><div style="background-color:white"><img src="/static/img/sar/{{ image }}.jpg" class="img-responsive img-thumbnail" style="height:5%;width:13%"></img><br><font color="black">{{ sarcasm }}</font><br></div></div></td>
+			</tr>
+			</table>
+            
+        </div>
+    </div>
+	<div class="row"></div>
+</div>
+</div>
+{% endblock %}

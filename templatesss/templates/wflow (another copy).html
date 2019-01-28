@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+     <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/static/js/d3.v3.min.js"></script>
+    <script type="text/javascript">
+    	$.ajaxSetup({
+    
+      beforeSend: function(xhr, settings) {
+        if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE') {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    		}
+		});
+
+
+
+
+
+
+
+    </script>
+
+
+
+</head>
+
+<body>
+    <!--Import jQuery before materialize.js-->
+
+
+    <nav class="grey" role="navigation">
+        <div class="nav-wrapper container">
+            <img src="/static/img/black-spider.png">
+            <a href="#" class="brand-logo white-text">&nbsp;&nbsp;AJAX CRAWLER </a>
+
+        </div>
+    </nav>
+
+    {% if crawl_obj %}
+    <h1>Vulnerable Workflows in scan_id {{ crawl_obj.id }}</h1>
+
+    {% for wf_obj, wflow in vwflows %}
+    <div class="col">
+        <div class="col s12 m6">
+          <div class="card red darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Workflow Number : {{ wf_obj.wflow_no }}</span>
+              
+              <ul>
+                 {% for item in wflow %}
+                  <li>
+                    <font color="black"><b>url</b></font>: {{ item.url}} <font color="black"><b> data:</b></font> {{item.data}}  <font color="black"><b>critical:</b> </font>True
+                  </li>
+
+                 {% endfor %}
+                  
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    {% endfor%}
+   
+
+    {% for wf_obj, wflow in nonvflows %}
+
+    <div class="col">
+        <div class="col s12 m6">
+          <div class="card grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title"> Workflow Number {{ wf_obj.wflow_no }}</span>
+              
+              <ul>
+                 {% for item in wflow %}
+                  <li>
+                 <font color="black"><b>url</b></font>: {{ item.url}} <font color="black"><b> data:</b></font> {{item.data}} <font color="black"><b>critical:</b> </font>{{item.critical}}
+                  </li>
+
+                 {% endfor %}
+                  
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    {% endfor%}
+   
+
+     
+    {% else %}
+      
+    <h1> No Vulnerable Workflows </h1>  
+
+    {% endif %}
+      
+</body>
+
+
+
+
+  </html>

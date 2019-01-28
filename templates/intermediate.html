@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block title %} Details -- {{ project_name }} {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+
+<div id="loading_div" style="display:none" class="loading">
+								
+								<div><div class="loading_header text-center">Loading</div><div><br><img src="/static/img/spin.gif" class="img-responsive center-block"></img></div></div>
+				</div>
+
+<div class="col-sm-12 col-md-12 main" id="dashboard_area">
+			
+				
+                    <!-- Heading! -->
+				<div id="main_container">
+				<h1 class="page-header">Vul Scanning Details - {{ project_id }}</h1>
+				
+				<div id="response_div" class="alert alert-info" style="display:none"><button type="button" class="close" onclick="hide_me();" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp; <div id="response_span"></div></div>
+				
+	<div class="alert alert-danger" id="error_div" style="display:none"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> <span id="error_message"></span></div>
+								
+				<div id="status_div" name="status_div" style="display:none"></div>
+				
+
+                    
+					<div id="updated_content_parent"></div>
+                    <div id="details_area">
+						
+						{% if error == 'True' %}<br><br><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>
+						{% else %}
+
+                    
+				
+    					<br>
+						<br>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Project Configuration Obtained
+                                </h3>
+                            </div>
+                          
+                            <div class="panel-body">
+                                	
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Project Name</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">{{ project_id }}</p>
+                                        </div>
+									</div>
+									<br>
+									<form class="form-horizontal" role="form" method="post" action="Download">
+                                    {% if project_status == 'complete' %}
+                                    <div class="form-group">
+                                        
+                                        <div class="col-sm-10">
+                                            <input type="submit" class="btn btn-primary btn-xs" value="Download Report" ><input type="hidden" name="project_id" value="{{ project_id }}">
+											{% csrf_token %}
+                                        </div>
+										                                        
+                                    </div>
+									
+                                    {% endif %}
+                                    
+                               		</form>
+									<br>
+									<div class="progress progress-striped active">
+								            <div class="progress-bar progress-bar-success" id="percent" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percentage }}%;">
+								                <strong>{{ percentage }}% Completed</strong>
+								            </div>
+											<br>
+											<table class="table table-striped table-hover" style="font-size:100%">
+						                        <colgroup>
+						                            <col class="col-xs-1">
+						                   
+						                        </colgroup>
+						                        <thead>
+						                            <tr>
+						                                <th>
+						                                    
+						                                </th>
+														<th>
+															Current Status
+														</th>
+														<th></th>
+						                            </tr>
+						                        </thead>
+						                        
+						                        <tr>
+													<td></td>
+						                            <td id="status">
+						                                <b>{{ project_status }}</b>
+													<td>
+													<td>
+													<input type="hidden" id="continue" name ="continue" value="{{ continue }}"></input>
+													<input type="hidden" id="percent_current" name ="percent_current" value="{{ percentage }}"></input>
+													<input type="hidden" id="error" name ="error" value={{ error }}></input>
+													
+													<input type="hidden" id="change_content" name ="change_content" value="{{ change_contentt }}"></input>
+												
+													<input type="hidden" id="record_list" name ="record_list" value="{{ record_list }}"></input>
+													</td>
+						   					    </tr>
+						                    </table>
+
+										</div>
+                                    </div>
+                                	
+                            </div>
+                        
+                            
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Project Details</h3>
+								
+                            </div>
+							<br>               									
+							<div class="panel-body">
+								
+								<div class="table-responsive">
+                                <table id="my_table" style="font-size:100%">
+                                    <thead class="thead-inverse" style="background-color:black;color:yellow">
+                                        <tr>
+											<th class="col-md-2">
+                                                Host
+                                            </th>
+											<th class="col-md-2">
+                                                Port
+                                            </th>
+											<th class="col-md-2">
+                                                Service
+                                            </th>
+											<th class="col-md-1">
+                                                Type
+                                            </th>
+											
+											<th class="col-md-1">
+                                               Result
+                                            </th>
+											
+                                        </tr>
+                                    </thead>
+
+									<tbody>
+                                    {% for data in content %}
+									
+                                    <tr style="background-color:white">
+										
+                                        <td class="col-md-2"><span id="span1"> {{ data.host }}</td>
+										<td class="col-md-2"><span id="span2"> {{ data.port }}</td>
+										<td class="col-md-2"><span id="span3"> {{ data.service }}</td>
+										<td class="col-md-1"><span id="span4"> {{ data.service_type }}</span></td>
+										<td class="col-md-1"> 
+										{% if data.project_status != 'complete' and data.service_type == 'existing' and data.test_case == 'true' %}
+											<a href="#" data-target="#show_results_{{ data.id }}" data-toggle="modal"	
+ 											class="btn btn-info btn-sm">
+          										<span class="glyphicon glyphicon-ok"></span>
+        									</a>
+
+										
+										{% elif data.project_status == 'complete' %}
+											<a href="#/" data-target="#show_results_{{ data.id }}" data-toggle="modal" class="btn btn-success btn-sm">
+          										<span class="glyphicon glyphicon-ok"></span>
+        									</a>
+										{% elif data.project_status == 'processing' or data.project_status == 'init' and data.service_type == 'existing' %}
+											<a href="#/" class="btn btn-danger btn-sm">
+          										<span class="glyphicon glyphicon-pause"></span>
+        									</a>
+
+										{% endif %}
+										</td>
+																			
+									</tr>
+									
+	               					{% endfor %}
+									</tbody>
+                                </table>
+								</div>
+                            </div>
+							
+                            
+                        </div>
+						 {% endif %}  
+                    </div>
+				</div>
+					
+					<script>
+							json_obj=[];
+							//json_obj_list=[];
+							function init_search_table()
+							{
+							//alert("here 1");
+							var table = $('#my_table').DataTable();
+							//alert("here 2");
+						 	
+							}
+
+							$(document).ready( function () {
+								init_search_table();
+							  	$('[data-toggle="tooltip"]').tooltip();
+
+					
+					}); 
+							function hide_me()
+							{
+								$('#response_div').hide();
+							}		
+
+							function getCookie(name) {
+							//alert("In get cookie !");
+							var cookieValue = null;
+							if (document.cookie && document.cookie != '') {
+								var cookies = document.cookie.split(';');
+								for (var i = 0; i < cookies.length; i++) {
+									var cookie = jQuery.trim(cookies[i]);
+									// Does this cookie string begin with the name we want?
+									if (cookie.substring(0, name.length + 1) == (name + '=')) {
+										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+										break;
+									}
+								}
+							}
+							return cookieValue;
+								}
+			
+							</script>
+					
+                </div>
+				
+           
+{% endblock %}
+
+
+
+{% block scripts %}
+        <script>
+			function update_details() {
+				//alert($('#status_div').html());
+                $.get("/details_vul_scan_im?proj_id={{ project_id }}",
+                    function(data){
+						//alert(data);
+						var temp=$(data);
+						//alert($(data));
+						if (($(data).find('#change_content').val()=="True"))
+						{
+						val=$(data).find('#record_list').val();
+						//alert(val);
+						$('#status_div').html('');
+						
+						var list=jQuery.parseJSON(val);
+						
+						//alert("list is :"+list);
+						for (var i=0;i<list.length ;i++)
+						{
+						var search_element="show_results_"+list[i];
+						//alert("search element is :"+search_element);
+						if ($('#show_results_'+list[i]).length)
+						{
+							if ($(temp).find('#show_results_'+list[i]).length)
+							{
+							
+							$('#show_results_'+list[i]).html($(data).find('#show_results_'+list[i]).html());//remove();
+						
+							//alert(temp.find('#show_results_'+list[i]).length);
+							temp.find('#show_results_'+list[i]).remove();
+							}
+							
+						}
+						}
+                        $('#details_area').html(temp);
+						//alert("Now 2 len is : "+$('#show_results_'+list[0]).length);
+						$('#updated_content_parent').append($('#updated_content_child').html());
+						$('#updated_content_child').html('');
+						//alert("Now 3 len is : "+$('#show_results_'+list[0]).length);
+						init_search_table();
+						
+						$body = $("#loading_div");
+									var obj=jQuery.parseJSON(val)
+									var converted=JSON.stringify(obj);
+									csrf_val=getCookie('csrftoken');
+									json_obj=[];
+									$.post("/details_vul_scan_im/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":"{{ project_id }}"},
+								    function(data){
+											if ((data.error=="True") )
+												{
+												 $("#error_div").attr('display','block');
+												 $("#error_message").html(data.error_msg);
+												}
+													}
+										);
+									
+						
+						}
+								
+						}
+                );
+			
+                if (($('#status').text().trim()=="In Progress") && ($('#percent_current').val().trim()!="100"))
+					{
+						//alert("About to poll");
+                    setTimeout(update_details, 5000);
+					}
+					
+            }
+            
+            if (($('#status').text().trim()=="In Progress"))
+				{
+				//alert(1);
+				update_details();
+					}
+				//alert(1);
+				//update_details();
+        </script>
+	
+{% endblock %}
+

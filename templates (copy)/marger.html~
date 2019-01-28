@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %} Add New Scan {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+                    
+					{% if success == 'False' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>{% endif %}
+			{% if success == 'True' %}<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Success </strong> <br>{{ success_msg }}</div>{% endif %}
+			<br>
+					<div id="merger" style="display:none">
+						<div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                     <label><font color="">Merge Qualys ,Nessus and Mannual Reports</font></label>
+                                </h3>
+                            </div>
+							<div class="panel-body">
+							<form  class="form-horizontal" role="form" method="POST" action="/Merger/" enctype="multipart/form-data">    
+		                        
+		                         <div class="form-group">
+		                            <label for="project" class="col-sm-2 control-label">Project Name</label>
+									<div class="col-sm-6">
+		                                    <select name="project" id="project" class="form-control">
+											{% for project in projects %}
+											 {% if project.project_status == 'complete' and project.project_status_exploits == 'complete' %}
+												<option value ={{ project.id }}>{{ project.name }}</option>
+											{% endif %}
+											{% endfor %}
+											</select>
+								
+		                            </div>
+								</div>
+								<div class="form-group"">
+									
+									 <label for="project" class="col-sm-2 control-label">Report Format</label>
+									<div class="col-sm-6">
+		                                    <select name="format" id="format" class="form-control">
+											
+												<option value ="0">Select Format</option>
+												<option value ="html">HTML</option>
+												<option value ="json">JSON</option>
+												<option value ="csv">CSV</option>
+												<option value ="xml">XML</option>
+												
+											</select>
+								
+		                            </div>
+
+								</div>
+								
+								
+								 {% csrf_token %}
+		                    <div class="form-group">
+		                        <div class="col-sm-offset-2 col-sm-10">
+		                            <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Download </button>
+		                        </div>
+		                    </div>
+							</div>
+		                   </form>
+						</div>
+                	</div>
+					
+					                </div>
+
+                </div>
+				
+            
+{% endblock %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

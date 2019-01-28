@@ -1,0 +1,465 @@
+{% extends "base.html" %}
+
+{% block title %} Details -- {{ project_name }} {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+				<div id="loading_div" style="display:none" class="loading">
+								
+								<div><div class="loading_header text-center">Loading</div><div><br><img src="/static/img/spin.gif" class="img-responsive center-block"></img></div></div>
+				</div>
+				
+				<div id="main_container">
+					
+								
+                    <div id="details_area">
+						{% if error == 'True' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>
+						{% else %}
+                    <h1 class="page-header">Details - {{ project_id }}</h1>
+				
+    
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Project Configuration Obtained
+                                </h3>
+                            </div>
+                          
+                            <div class="panel-body">
+                                
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Project Name</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">{{ project_id }}</p>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                            
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Configuration Details</h3>
+								
+                            </div>
+							<br>               									
+							<div class="panel-body">
+								<br>
+								<div class="table-responsive">
+                                <table id="my_table" style="font-size:100%">
+                                    <thead class="thead-inverse">
+                                        <tr>
+											<th class="col-md-2">
+                                               Commands Associated
+                                            </th>
+                                            <th class="col-md-2">
+                                                Host
+                                            </th>
+											<th class="col-md-2">
+                                                Port
+                                            </th>
+											<th class="col-md-2">
+                                                Service
+                                            </th>
+											<th class="col-md-1">
+                                                Type
+                                            </th>
+											<th class="col-md-1">
+                                                State
+                                            </th>
+											<th class="col-md-1">
+                                                Version
+                                            </th>
+											
+											<th class="col-md-1">
+                                               Reconfigure
+                                            </th>
+											
+                                        </tr>
+                                    </thead>
+
+									<tbody>
+                                    {% for data in content %}
+									
+                                    <tr style="background-color:white">
+										<td class="col-md-2"> 
+										<b><a href="#command_{{data.id}}" id="scan_slider" style="text-decoration:none"
+										 data-toggle="collapse" >Commands</a></b>
+
+											<div id="command_{{data.id}}" class="collapse">
+												<table class="table">
+												{% for c in data.Commands %}
+												 <tr><td style="background-color:#dff0d8">Include</td><td>{{ c.include }}</td></tr>
+												<tr><td style="background-color:#dff0d8">ID</td><td>{{ c.id }}</td></tr>
+												<tr><td style="background-color:#dff0d8">Arguments</td><td>
+														<div> {{c.args }}
+														
+														</div>
+																	</td></tr>
+												<tr><td></td><td></td></tr>
+												{% endfor %}
+												</table>
+												
+											</div>
+										</td>
+									
+                                        <td class="col-md-2"><span id="span1"> {{ data.host }}</span><br><input class="form-control" id="host_{{data.id}}" type="text" value="{{ data.host }}" 
+  style="display:none"></input></td>
+										<td class="col-md-2"><span id="span2"> {{ data.port }}</span><br><input class="form-control" type="text" value="{{ data.port }}" id="port_{{data.id}}" 
+ style="display:none"></input></td>
+										<td class="col-md-2"><span id="span3"> {{ data.service }}</span><br><input class="form-control" type="text" value="{{ data.service }}" id="service_{{data.id}}"
+ style="display:none"></input></td>
+										<td class="col-md-1"><span id="span4"> {{ data.service_type }}</span></td>
+										<td class="col-md-1"><span id="span4"> {{ data.state }}</span></td>
+										<td class="col-md-1"><span id="span4"> {{ data.version }}</span></td>
+										<td class="col-md-1"> <b><a href="#/" data-toggle="tooltip" title="Reconfigure_Service" data-placement="left" onclick="toggle_r({{data.id}})">Reconfigure</a>
+										</td>
+																			
+									</tr>
+									
+	               					{% endfor %}
+									</tbody>
+                                </table>
+								</div>
+							<br>
+							<br>
+						
+							
+							
+							<div class="row" >							
+							 <div class="col-sm-10">
+								<table class="table table-inverse" style="font-size:100%">
+								<tr>
+								<th class="col-md-2">Host</th>
+								<th class="col-md-2">Port</th>
+								<th class="col-md-2">Service</th>
+								<th class="col-md-2">Action</th>
+								</tr>
+								<tr>
+								<td class="col-md-2">
+								<input type="text" id="add_host" name="add_host" placeholder="192.168.179.132"></input>
+								</td>
+								<td class="col-md-2">
+								<input type="text" id="add_port" name="add_port" placeholder="22"></input>							</td>
+								<td class="col-md-2">
+								<input type="text" id="add_service" name="add_service" placeholder="ssh"></input>								
+								</td>
+                                <td class="col-md-2"><button id="add_case" onclick="add({{project_id}});" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-play-circle"></span>Add Test Case</button>
+								</td>
+								</tr>
+								</table>
+                            </div>
+                        	</div>
+							
+                        	
+							<br>
+							<div class="row">
+
+							<div class="col-sm-10">
+                                <button onclick="Update({{project_id}});"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span>Update</button>
+                            </div>
+							</div>
+							<br>
+							<div class="row">
+							
+							 <div class="col-sm-10">
+								<form class="form-horizontal" role="form" action="/vul_scan/" method="post">
+							{% csrf_token %}
+							
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+								<input type="hidden" id="project_id" name="project_id" value={{project_id}}>
+								</input>
+								<input type="hidden" id="threading" name="threading" value="False"></input>
+								<input id="thread" type="checkbox" onclick="Threading();">Threading</input>
+								</form>
+                            </div>
+							
+                        	</div>
+							
+                        
+                            </div>
+							
+                           
+                        </div>
+						   {% endif %} 
+                    </div>
+				</div>
+					
+					<script>
+							json_obj=[];
+							//json_obj_list=[];
+							function Threading()
+							{
+								if ($('#thread').prop("checked")==true)
+									{
+										$('#threading').val("True");
+									}
+								else
+									$('#threading').val("False");
+							}
+
+
+
+							function init_search_table()
+							{
+								/*$('#my_table tfoot th').each( function () {
+								var title = $(this).text();
+								$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+									} );
+								*/
+						 
+							// DataTable
+							var table = $('#my_table').DataTable();
+						 	/*alert("aa");
+							// Apply the search
+								table.columns().every( function () {
+								alert("21");
+								var that = this;
+						 		alert("22");
+								$( 'input', this.footer() ).on( 'keyup change', function () {
+														alert("1");
+									if ( that.search() !== this.value ) {
+										that
+											.search( this.value )
+											.draw();
+											}
+										} );
+									} );
+							*/
+							}
+
+							$(document).ready( function () {
+								//alert("helo");
+								init_search_table();
+							  //var table = $('#my_table').DataTable();
+								$('[data-toggle="tooltip"]').tooltip();
+							} );
+							function toggle_r(id)
+							{
+								$('#host_'+id).toggle();	
+								$('#port_'+id).toggle();
+								$('#service_'+id).toggle();
+								$('#reconfig_service_'+id).toggle();
+								var is_visible=$('#host_'+id).is(":visible");
+								if (is_visible==true)
+								{
+									Load_Entries(id,0);
+								}
+								else
+								{
+									Load_Entries(id,1);
+								}
+								
+								
+							}
+							function test()
+							{
+								alert("In method test");
+							}
+
+							function add(project_id)
+							{
+								alert("hello :"+project_id)
+								var json_obj_list=[];
+								if (($('#add_host').val().trim() !="") && ($('#add_port').val().trim() !="") && ($('#add_service').val().trim() !=""))
+								{
+								entry={}
+								entry_envolope={};
+								entry["host"]=$('#add_host').val();
+							
+								entry["port"]=$('#add_port').val();
+								entry["service"]=$('#add_service').val();
+								entry["id"]=0;
+								entry["concurrent"]="0";
+								entry["project_id"]=project_id;
+								var commands=[];
+								command_entries={};
+								commands.push(command_entries);
+								entry["Commands"]=commands;
+								json_obj_list.push(entry);
+								
+								$body = $("#loading_div");
+									var converted=JSON.stringify(json_obj_list);
+									csrf_val=getCookie('csrftoken');
+									$body.show();
+									
+									$.post("/add/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":project_id,"mode":"sequential"},
+								    function(data){
+										//alert(data);
+										$('#main_container').html(data);
+										init_search_table();
+										$body.hide();
+													}
+										);
+									}
+									else 
+										{
+											alert("You have not added any configuration");
+											//Show some proper kool box here instead of alert
+										}
+									
+
+							}
+							function Update(project_id)
+							{
+								if (json_obj.length > 0)
+								{
+									var json_obj_list=[];
+									//alert("Inside Update function :");
+									for (var i=0;i<json_obj.length;i++)
+										{
+											e=json_obj[i];
+											entry={};
+											entry_key=e;
+											entry_envolope={};
+											entry["host"]=$('#host_'+e).val();
+										
+											entry["port"]=$('#port_'+e).val();
+											entry["service"]=$('#service_'+e).val();
+											entry["id"]=e;
+											entry["concurrent"]="0";
+											entry["reconfig_service"]=true;
+											entry["reconfig_exploit"]=false;
+											entry["project_id"]=project_id;
+											//alert(entry["port"]);
+											//alert(entry["service"]);
+											//alert(entry["host"]);
+											var commands=[];
+											command_entries={};
+											command_entries["include"]=true;
+											command_entries["id"]=entry["service"];	
+											command_entries["args"]=["arg1","arg2"];
+											commands.push(command_entries);
+											entry["Commands"]=commands;
+											json_obj_list.push(entry);
+
+										}
+									$body = $("#loading_div");
+									var converted=JSON.stringify(json_obj_list);
+									csrf_val=getCookie('csrftoken');
+									$body.show();
+									json_obj=[];
+									$.post("/config/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":project_id,"mode":"sequential"},
+								    function(data){
+										//alert(data);
+										$('#main_container').html(data);
+										init_search_table();
+										$body.hide();
+													}
+										);
+									}
+									else 
+										{
+											alert("You have notupdated any configuration");
+											//Show some proper kool box here instead of alert
+										}
+									}
+
+							function getCookie(name) {
+							//alert("In get cookie !");
+							var cookieValue = null;
+							if (document.cookie && document.cookie != '') {
+								var cookies = document.cookie.split(';');
+								for (var i = 0; i < cookies.length; i++) {
+									var cookie = jQuery.trim(cookies[i]);
+									// Does this cookie string begin with the name we want?
+									if (cookie.substring(0, name.length + 1) == (name + '=')) {
+										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+										break;
+									}
+								}
+							}
+							return cookieValue;
+						}
+							function Load_Entries(id,delete_)
+								{
+									if (delete_==0)
+									{
+										//alert("Pushing entry :"+id);
+										json_obj.push(id);
+									}
+									else
+									{
+										//alert("Popping element");
+										for (var i=0;i<json_obj.length;i++)
+									{
+										e=json_obj[i];
+										if (e==id)
+										{
+											//alert("About to remove element with id :" +id);
+											json_obj.splice(i,1);
+										}
+										
+
+									}
+									}	
+								}
+
+								function Load_Entries_data(id)
+								{
+								if ($('#reconfig_service_'+id).prop("checked")==true)
+								{
+									//"checked");
+									entry={};
+									entry_key=id;
+									entry_envolope={};
+									entry["host"]=$('#host_'+id).val();
+									entry["port"]=$('#port_'+id).val();
+									entry["service"]=$('#service_'+id).val();
+									entry["id"]=id;
+									//alert(entry);
+									//alert(entry_key);
+		
+									entry_envolope[entry_key]=entry;
+									json_obj.push(entry_envolope);
+									
+								}
+								else
+								{
+									//alert("unchecked and Removing");
+									//e=json_obj[0];
+									for (var i=0;i<json_obj.length;i++)
+									{
+										e=json_obj[i];
+										for (var key in e)
+										{
+											if (key==id)
+											{
+											 	//alert("About to remove element with id :" +id);
+												json_obj.splice(i,1);
+											}
+											
+										if (Object.hasOwnProperty(key))
+										{
+													//alert("val is :"+e[key]);
+										}
+										}
+									}
+									alert("Now left Items are :");
+									for (var i=0;i<json_obj.length;i++)
+									{
+										e=json_obj[i];
+										for (var key in e)
+										{
+											alert("Key left is :"+key);
+											alert("value left is :"+e[key]);
+
+										}
+									}
+								}
+														
+								
+							}
+							</script>
+					
+                </div>
+				
+           
+{% endblock %}
+

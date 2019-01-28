@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+
+
+{% block title %} Reports {% if option_given %}- {{ project.project_name }}{% endif %} {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                  
+                    {% if option_given %}
+<div class="alert alert-success">
+                       
+ <span class="glyphicon glyphicon-floppy-saved"></span> <strong> ConsoliDated Report</strong>  
+</div>
+<div>
+<!--<h1 class="page-header">Report <br> Name : - {{project_name}} <br> ID : {{project_id}}</h1> <button onclick="create_zip()"  class="btn btn-primary" style="position:absolute;left:80%;">Download Report!!!</button>-->
+					
+</div>
+					<div id="workflow_reports"></div>
+					<div id="session_reports" ></div>
+					<div id="extractor_reports"></div>
+					<div id="Links">Kindly Visit the following Links in order to read further about Busniss LOgic Vulnerabilities and how to fix them.<br>
+					<ul>
+					<li>
+					<a href="https://www.owasp.org/index.php/Testing_for_business_logic">Testing for business logic</a>
+					</li>
+					<li>
+					<a href="https://www.owasp.org/index.php/Test_business_logic_data_validation_(OTG-BUSLOGIC-001)">Test business logic data validation </a>
+					</li>
+					<li>
+					<a href="https://www.owasp.org/index.php/Testing_for_business_logic">Business Logic Security Cheat Sheet</a>
+					</li>
+					
+					</ul>
+
+					
+					
+                   
+					
+					
+                    {% else %}
+                    <h1 class="page-header">Reports</h1>
+                    {% endif %}
+                    {% if option_given %}
+                    {% if error %}
+                    <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> No project found!</div>    
+		    {% endif %}			 
+		   {% endif %}	
+
+{% endblock %}
+
+

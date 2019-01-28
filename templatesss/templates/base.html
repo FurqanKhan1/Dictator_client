@@ -1,0 +1,274 @@
+ <html>
+    <head>
+        <!-- Meta Links -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Dictator Framework for Network Penetration testing">
+        <meta name="author" content="Furqan Khan">
+        
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="/static/favicon.ico">
+        
+        <!-- Title -->
+        <title> XiLogic Framework |{% block title %}{% endblock %}</title>
+        
+        <!-- Open Sans all the way! -->
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <!-- Bootstrap CSS -->
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet">
+        
+        <!-- CSS links for just this page, if any! -->
+        {% block css_links %}{% endblock %}
+        
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+		<style type="text/Css">
+		.tooltip-inner {
+			max-width: 350px;
+			/* If max-width does not work, try using width instead */
+			width: 350px; 
+						}
+		@media (max-width: @screen-xs) {
+			body{font-size: 10px;}
+			}
+
+			@media (max-width: @screen-sm) {
+				body{font-size: 14px;}
+				}
+
+
+			h5{
+				font-size: 1.4em;
+				}
+		</style>
+		
+		<script type="text/javascript" src="/static/js/jszip.js"></script>
+		<script type="text/javascript">
+		
+		function show_fl()
+		{
+		//alert("h1");
+		document.getElementById("float").style.display="block";
+		}
+		
+	    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+		function create_zip() 
+		{
+		//alert("zip");
+		 var xmlhttp;
+		 var csrfmiddlewaretoken="Q8fZUKGdyX7zMOkiJfisR2ae26xcWaYs"
+		 var test=122;
+		 //var csrftoken=getCookie('csrftoken');
+		 //alert(csrftoken);
+      
+	  //var content="hello test";
+	   //alert("content is "+document.documentElement.outerHTML);
+    if(window.XMLHttpRequest)
+    {
+    xmlhttp =new XMLHttpRequest();
+    }
+    else
+    {
+     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+	if((xmlhttp.readyState==1 || xmlhttp.readyState==3))
+        {
+        //load_me.style.display="block";
+		//alert("aaa");
+        document.getElementById("center_loading").style.display="block";
+       
+        }
+    
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+		{
+         
+		 
+		 //alert("response is/css content before formating "+xmlhttp.responseText);
+            //alert("a");
+			document.getElementById("center_loading").style.display ="none";
+			var css=xmlhttp.responseText;
+			var zip = new JSZip();
+	       text=document.documentElement.outerHTML;
+		   var ind=text.indexOf("<!--");
+		   //alert(ind);
+		   
+		   var text1=text.substring(0,ind);
+		   //alert(text1);
+		  var text1=text1+'<link type="text/css" href="style.css" rel="stylesheet">';
+		  //alert(text1);
+		  var text2=text.substring(ind);
+		  text3=text1+text2;
+		  css=css.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x2F;/g, "/");
+		  //alert("css after updation  "+css);
+		  //var str = "Mr Blue has a blue house and a blue car blue blue blue ";
+          //var res = str.replace(/blue/gi, "red");
+		 // alert(res);
+	        
+	         zip.add("index.html", text3);
+			 zip.add("style.css",css);
+	         content = zip.generate();
+	         location.href="data:application/zip;base64," + content;
+			 
+           
+            
+        }
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 0) 
+		{
+		document.getElementById("center_loading").style.display ="none";
+         }
+    }
+   
+    
+
+   // xmlhttp.open("GET", "/details?proj_name={{ project.project_name }}&update=1", true);
+	xmlhttp.open("GET", "/script?method_id='2'&content='text'&proj_name={{ project.project_name }}&update=1", true);
+	//xmlhttp.setRequestHeader("X-CSRFToken", csrftoken);
+    xmlhttp.send();
+	
+	
+
+}
+		}
+		</script>
+		 <script type ="text/javascript" src="/static/js/jhquery 1.9.1.js"></script>
+		 
+		<script type ="text/javascript">
+		
+		function OpenConstraintDiv(id)
+		{
+		$("#" + id).slideToggle("fast");
+		}
+		
+		
+		
+		</script>
+    </head>
+    
+    <body>
+        
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/" style="color:#ffffff"><span class="glyphicon glyphicon-flash"></span>Dictator  </a>
+                </div>
+                
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li{%if page and page == 'overview'%} class="active"{% endif %}><a href="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li{%if page and page == 'settings'%} class="active"{% endif %}><a href="/settings"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                        <li><a href="/documentation"><span class="glyphicon glyphicon-paperclip"></span> Docs</a></li>
+                        <li><a href="/faqs"><span class="glyphicon glyphicon-question-sign"></span> FAQs</a></li>
+                    </ul>
+                    
+                    <form class="navbar-form navbar-right" action="/details">
+                        <input name="proj_name" type="text" class="form-control" placeholder="Search Project">
+                        <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-search"></span> Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    
+                     <ul class="nav nav-sidebar">
+                        <li><a href="/"  style="text-decoration:none" id="about_slider" ><span class="glyphicon glyphicon-plus"></span>&nbsp;About</a></li>
+						
+						</ul>
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#float" id="scan_slider" style="text-decoration:none" data-toggle="collapse" ><span class="glyphicon glyphicon-plus"></span>&nbsp;Scan</a>
+						<div id="float" style="display:none" class="collapse">
+						<table style="position:relative;left:15%">
+						<tr>
+						<td>
+						<ul class="nav nav-sidebar1">
+						<li {%if page and page == 'new_scan'%} class="active"{% endif %}><a href="/scans" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-plus"></span>&nbsp;Start new Scan</a></li>
+						<li {%if page and page == 'resume_scan'%} class="active"{% endif %}><a href="/resume" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-play"></span>&nbsp;&nbsp; Modify/Pause Scan</a></li>
+						<li><a href="#float_overview" id="overview_slider" style="text-decoration:none;font-size:14px;" data-toggle="collapse"><span class="glyphicon glyphicon-home"></span> View progress/Overview</a>
+						<div id="float_overview" style="display:none" class="collapse">
+						<table style="position:relative;left:17%">
+						<tr>
+						<td>
+						<ul class="nav nav-sidebar1">
+						<li {%if page and page == 'overview'%} class="active"{% endif %}><a href="/xml_inj" style="text-decoration:none;font-size:14px"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;<font size="1.5px">Overviev-All Scans</font></a></li>
+						
+						<li {%if page and page == 'blind_overview'%} class="active"{% endif %}><a href="/blind_overview" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-home"></span><font size="1.5px">Overview-Blind XPath Scans</font></a></li>
+						
+						</ul>
+						</td>
+						</tr>
+						</table>
+						</div>
+						</li>
+						</ul>
+						</td>
+						</tr>
+						</table>
+						</div>
+						</li>
+                    </ul>
+					<ul class="nav nav-sidebar">
+					 <li><a href="#float_reports" id="reports_slider"><span class="glyphicon glyphicon-tasks" data-toggle="collapse"></span> Vulnerability reports</a></li>
+					<div id="float_reports" style="display:none" class="collapse"> 
+						<table style="position:relative;left:15%">
+						<tr>
+						<td>
+						<ul class="nav nav-sidebar1">
+                        <li {%if page and page == 'reports'%} class="active"{% endif %}><a href="/reports" style="text-decoration:none;font-size:14px"><span class="glyphicon glyphicon-tasks"></span> Xml Injection</a></li>
+						<li {%if page and page == 'blind_report'%} class="active"{% endif %}><a href="/blind_report" style="text-decoration:none;font-size:14px"><span class="glyphicon glyphicon-tasks"></span> Blind XPath Scan</a></li>
+						<li {%if page and page == 'reports_ex'%} class="active"{% endif %}><a href="/reports_ex" style="text-decoration:none;font-size:14px"><span class="glyphicon glyphicon-tasks"></span> Parameter Manupulation </a></li>
+						<li {%if page and page == 'session_reports'%} class="active"{% endif %}><a href="/session_reports" style="text-decoration:none;font-size:14px"><span class="glyphicon glyphicon-tasks"></span> State Violation </a></li>
+						<li {%if page and page == 'wflow_reports'%} class="active"{% endif %}><a href="/wflow_reports" style="text-decoration:none;font-size:14px"><span class="glyphicon glyphicon-tasks"></span> WorkFlow Violation </a></li>
+					    </ul>
+					</td>
+					</tr>
+					</table>
+					</div>
+					</ul>
+
+                   
+
+                </div>
+				</div>
+				</div>
+                
+                {% block body_content %}{% endblock %}
+        
+        <!-- Bootstrap core JavaScript -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/docs.min.js"></script>
+                
+        {% block scripts %}{% endblock %}
+		{% block scripts_blind %}{% endblock %}
+    
+    </body>
+</html>

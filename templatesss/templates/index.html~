@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+<script type="text/javascript">
+function get_me()
+{
+//alert("hello");
+//document.getElementById("purpose").style.backgroundColor="#f5f5f5";
+//alert(document.getElementById("purpose").style.backgroundColor);
+}
+
+</script>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+<div id="menu" style="position:relative;left:15%"><span class="btn btn-primary"  style="position:relative;left:6%;background-color:white;border-color:black;color:black;border-style:none"><span class="glyphicon glyphicon-play-circle" style="color:black"></span><a href="#"  style="text-decoration:none;color:black" onclick ="get_me();">&nbsp;Purpose</a></span><span class="btn btn-primary"  style="position:relative;left:13%;background-color:white;border-color:black;color:black;border-style:none"><span class="glyphicon glyphicon-play-circle" style="color:black"></span><a href="#scope" style="text-decoration:none;color:black">&nbsp;Scope</a></span><span class="btn btn-primary"  style="position:relative;left:21%;background-color:white;border-color:black;color:black;border-style:none"><span class="glyphicon glyphicon-play-circle" style="color:black"></span><a href="#Team" style="text-decoration:none;color:black">&nbsp;Team</a></span><span class="btn btn-primary"  style="position:relative;left:29%;background-color:white;border-color:black;color:black;border-style:none"><span class="glyphicon glyphicon-play-circle" style="color:black"></span><a href="/tour" style="text-decoration:none;color:black">&nbsp;Product Tour</a></span></div>
+                    <br>
+                    <h3 style="position :relative;left:26%;border-style:none;">Full-Coverage Application Security Scanner :XiLogic</h3>
+					<br>
+					<div id ="purpose" style="width:100%;background-color:white;">
+					<div>
+                                <span class="btn btn-primary" style="cursor:default"><span class="glyphicon glyphicon-play-circle"></span> Purpose</span>
+                    </div>
+					<br>
+					<div style=""><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;">
+					The major objective of the tool is to detect Injection and Logic Vulnerabilities in Native XML based Web Applications using Black Box and Penetration Testing approach. The tool operates in two phases:
+<ul>
+<li>Phase 1 – Detection of XML Injection Vulnerabilities</li>
+<li>Phase 2 – Detection of Logic Vulnerabilities </li>
+</ul>				
+</p>
+
+					<b>This tool generates a vulnerability report which provides useful information to the tester which could be used to remove and vulnerabilities discovered.</b></p>
+					
+					</div>
+					
+					 </div>
+					 <br>
+					 <br>
+					 <div id ="scope" style="width:100%">
+					<div>
+                                <span class="btn btn-primary" style="cursor:default"><span class="glyphicon glyphicon-play-circle"></span> Scope</span>
+                    </div>
+					<br>
+					<div style=""><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;">
+					
+					The scope of the tool can be broadly classified into two parts :
+					<br>
+					<br>
+					<strong><b>XML Injection Vulnerability Detection:</b></strong>
+					<ul><li>
+					<p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;">
+					The scope of the first part of the tool is limited to identifying vulnerabilities that can be exploited by means of XQuery injection attacks.
+					The injection attacks that have been considered are as specified in the OWASP guidelines. The types of injection attacks covered are . The tool uses a crawler to crawl through the web application under test in order to identify 
+					the points of injection. An attack grammar is developed based on OWASP guidelines to generate attack strings which would be sent as payload at 
+					the points of injection to attack the application under test and hence identify vulnerabilities. The vulnerable points of the web application under 
+					test along with the type of injection attack it is vulnerable to would be reported by the tool. Blind XPath injection vulnerabilities are detected by
+					integration of  XCat (a tool for exploiting blind XPath injection vulnerabilities)  with the tool.<br>
+					The various types of injection attacks covered are  :
+					<ul>
+<li>Tautology attack: This attack is carried out by appending an expression that always returns ‘True’ to the user input. E.g. or ‘1’= ‘1 , or ‘a’= ‘a</li>
+<li>Meta Character injection attack: This attack is carried out by inserting an XML meta character in the user input such as ‘,”,<,>,& </li>
+<li>Comment injection attack: This attack is carried out by inserting a comment character sequence <!– in the user input. </li>
+<li>CDATA section injection attack: These are attacks carried out using the CDATA section. CDATA sections escape blocks of text which would otherwise be recognized as markup </li>
+<li>Tag injection attack: This attack is carried out by injecting a tag in the user input causing the structure of the XML to be modified and hence corrupting the database. </li>
+<li>External entity injection attack: The set of valid entities can be extended by defining new entities. If the definition of an entity is a URI, the entity is called an external entity. Unless configured to do otherwise, external entities force the XML parser to access the
+resource such as a file. </li>
+</ul>
+</li>
+
+					</p>
+					</ul>
+					<p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;">
+					<strong><b>Application Logic Vulnerability Detection:</b></strong>
+
+					<ul><li>
+					The scope of the second phase of this tool is limited to identifying parameter manipulation vulnerabilities,
+					access-control vulnerabilities, and workflow bypass vulnerabilities in web applications. For identification
+					of each of these type of vulnerabilities the tool would perform three basic steps, namely, extraction of information
+					about the web application under test, construction of valid and invalid inputs based on this information, 
+					comparison of responses obtained for the inputs and reporting vulnerabilities accordingly.
+					
+ <li>
+ For identifying parameter manipulation vulnerabilities, a crawler is employed for exploring the web application under test.
+ The crawler starts crawling the application starting from the seed URL and fetches the HTTP response. 
+ The HTML and JavaScript code in the HTTP response areanalyzed for extracting constraints placed on parameters 
+ flowing between different web pages. The constraints are violated for launching attacks. 
+ </li>
+<li>For analyzing the application against access-control vulnerabilities, a tester is allowed to navigate through the application
+ for generating execution traces. These traces are used for identifying the intended behavior of the application, and the parameters
+ and the session variables that are set in each web page are captured. A model is generated reflecting the application specifications. 
+ The model provides the dataflow with the parameters and session information flowing between different web pages. 
+ The model is used for launching access-control violation attacks for identifying vulnerabilities. 
+ </li>
+<li>For identifying workflow violation vulnerabilities, a crawler is employed for extracting all possible business workflows in the application.
+ A browser is simulated that fills in the forms automatically with values stored in the script generated using Selenium web driver, 
+ and submits HTTP requests to the application. A model is generated reflecting the intended workflow of the application which is
+ violated during HTTP requests submission for launching workflow violation attacks. 
+The response obtained after attack is compared with the response obtained during normal execution for identifying vulnerabilities.
+</li>
+</ul>
+
+			
+                    </p>
+					</li>
+
+					
+					</div>
+					<br><br>
+					 </div>
+					  <div id ="Team" style="width:100%">
+					<div>
+                                <span class="btn btn-primary" style="cursor:default"><span class="glyphicon glyphicon-play-circle"></span> Core Team</span>
+                    </div>
+					<br>
+					<div style=""><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;">
+					<strong>The core team consists of :</strong>
+					<ul>
+					
+					<li><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;"><b>Dr. P.Santhi Thilagam : </b>Chief Investigator , Associate Professor , National Institute of Technology Karnataka.</p> </li>
+					<li><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;"><b>Dr. Alwyn Roshan Pais : </b>Co Investigator , Assistant Professor , National Institute of Technology Karnataka. </p></li>
+					<li><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;"><b>Nushafreen Palsetia  : </b>Researcher/Solution architect , National Institute of Technology Karnataka. </p></li>
+					<li><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;"><b>Deepa Ganesan  : </b>Researcher/Solution architect , National Institute of Technology Karnataka. </p></li>
+					<li><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;"><b>Prabhjeet kour : </b>Project Scientist/solution architect  , National Institute of Technology Karnataka. </p></li>
+					<li><p style="text-align:justify;line-height:150%;color:#444444;font-size:14px;"><b>Furqan ahmed khan  : </b> Project Scientist/solution architect , National Institute of Technology Karnataka.</p> </li>
+				
+					
+
+					</ul>
+					</div>
+					
+					 </div>
+					 </div>
+{% endblock %}

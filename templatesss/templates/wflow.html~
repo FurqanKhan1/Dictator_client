@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %} Reports {% if option_given %}- {{ project.project_name }}{% endif %} {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+{% if crawl_obj %}
+    
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+<h3>WorkFolow Voilation Report - Project ID : {{ crawl_obj.id }}</h3>
+ <div id="parent_report" class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Scan Log</h3>
+							 
+                        </div>
+                        
+                        <div class="panel-body">
+						<div id="content_display" style="position:absolute;left:58%;width:38%;max-height:250px;overflow:auto;border-width:1px;border-style:solidd;border-color:gray;"></div>
+                           <table class="table" style="font-size:100%;position:relative;width:100%">
+                         <colgroup>
+                                    <col class="col-xs-2">
+                                    <col class="col-xs-2">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <b>Critical workFlows would be displayed in dark color :</b>
+                                        </th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+				
+						 {% for wf_obj, wflow in vwflows %}
+						 <tr><td>WorkFlow#</td></tr>
+						  <tr><td class="alert alert-danger"><ul>{% for item in wflow %}
+                  					<br>
+							<li>
+                    					<font color="black"><b>URL</b></font>: {{ item.url}} <br><font color="black"><b> Data:</b></font> {{item.data}}<br>  <font color="black"><b>Is Critical:</b> 								</font>True<br>
+                  					</li>
+							
+                 					  {% endfor %}</ul>
+<div id="info">
+<br>
+<p><font color="black">The Crttical node /Webpage lies between the above two URLS which is skipped while launching attack and still the application produces a valid response .Therefore this workflow is vulnerable</font></p> </div> </td></tr>	
+						 
+						  {% endfor %}
+						<tr><td ></td></tr>
+						  {% for wf_obj, wflow in nonvflows %}
+						 <tr><td>WorkFlow#</td></tr>
+						  <tr><td class="alert alert-warning"><ul>{% for item in wflow %}
+							<br>
+                  					<li>
+                    					<font color="black"><b>URL</b></font>: {{ item.url}} <br><font color="black"><b> Data:</b></font> {{item.data}}  <br><font color="black"><b>Is Critical:</b> 								</font>{{item.critical}}<br>
+                  					</li>
+                 					  {% endfor %} </ul>
+</td></tr>	 
+						  {% endfor %}
+				 </table>
+						 
+						 <br>
+						 <br><br>
+</div>
+   
+   <div id="Links">Kindly Visit the following Links in order to read further about Busniss LOgic Vulnerabilities and how to fix them.<br>
+					<ul>
+					<li>
+					<a href="https://www.owasp.org/index.php/Testing_for_business_logic">Testing for business logic</a>
+					</li>
+					<li>
+					<a href="https://www.owasp.org/index.php/Test_business_logic_data_validation_(OTG-BUSLOGIC-001)">Test business logic data validation </a>
+					</li>
+					<li>
+					<a href="https://www.owasp.org/index.php/Business_Logic_Security_Cheat_Sheet">Business Logic Security Cheat Sheet</a>
+					</li>
+					
+					</ul>
+
+     
+    {% else %}
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+<h3>WorkFolow Voilation Report - Project ID : {{ proj_id }}</h3>
+<div id="parent_report" class="panel panel-success">
+                        <div class="panel-heading">
+                            <h4> No Vulnerable Workflows </h4> 
+							 
+                        </div>
+                        
+                        <div class="panel-body">
+     
+</div>
+</div>
+    {% endif %}
+</div>
+   </div>
+					
+						 
+			
+
+{% endblock %}
+      

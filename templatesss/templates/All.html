@@ -1,0 +1,246 @@
+<html>
+<head>
+<script type="text/javascript" src="static/js/d3.v3.min.js"></script>
+		 
+		<script type ="text/javascript">
+$(document).ready(function(){
+		 $('[data-toggle="tooltip"]').tooltip({html: true}); 
+		 });
+</script>
+</head>
+<body><div id="session_content_all" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:gray">
+					<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+
+
+		<!-- Heading! -->
+                    <h1 class="page-header">Add a New Application Logic Vulnerability Scan</h1>
+
+                    
+
+                    <form class="form-horizontal" role="form" method="POST" action="/session_all" enctype="multipart/form-data" >
+                        <label for="toExclude"><font color="">Project Information</font></label><br><br>
+                        <!-- Set project name -->
+                        <div class="form-group">
+                            <label for="projectName" class="col-sm-2 control-label">Project Name</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Project Name Example</b></font><br>Project Name is the name by which final report would be generated" name="projectName" id="projectName" placeholder="Xtreme_Project_1" onclick="close_all();">
+                            </div>
+                        </div>
+                        
+                        <!-- Set Start URL -->
+                        <div class="form-group">
+                            <label for="startURL" class="col-sm-2 control-label">Seed URLs</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" data-placement="auto left"  data-toggle="tooltip" title="<font color=white size=3px><b>Start Url Example</b></font><br>Kindly Specify :<br>The protocol (http,https ,etc)<br> The domain name (localhost or etc) <br> The  app name (if present)<br> The index page/start page<br>
+							<br>
+							For eg : 
+							<ul>
+							<li>
+							
+							Example 1 :http://localhost:8000/MYapp/index.jsp
+							</li>
+							<li>
+							Example 2 (Without app name):  http://www.mysite.com/index.php
+							
+							</li></ul>" name="startURL" id="startURL" placeholder="http://example1.com,http://example2.com">
+                            </div>
+
+							
+                        </div>
+			<div class="form-group">
+                            <label for="startURL" class="col-sm-2 control-label">Scope URLs</label>
+                            <div class="col-sm-5">
+                                <input type="text" data-placement="auto left" data-toggle="tooltip" title="If your application has got multiple domains,specify all the domains that you wish to fall under scope of crawler" class="form-control" name="scopeUrls" id="scopeUrls" placeholder="localhost/">
+                            </div>
+
+							
+                        </div>
+{% csrf_token %}
+			<div class="form-group">
+				<label for="login-script" class="col-sm-2 control-label">Login Script</label>
+				<div class="fileinput fileinput-new col-sm-5" data-provides="fileinput">
+				<input type="file" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Login Script Example</b></font><br>Login Script file is the HTML file which would have been created with the help of selinium tool and would contain the Login Credentials.<br>
+									Please reffer to user mannual for further details" name="login-script" id="login-script" class="btn btn-default btn-file">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="login-script" class="col-sm-2 control-label">Form Values Script</label>
+				<div class="fileinput fileinput-new col-sm-5" data-provides="fileinput">
+				<input type="file" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Form Values Script Example</b></font><br>Form Values Script file is the HTML file which would have been created with the help of selinium tool and would contain the valid values for various input forms.<br>
+									Please reffer to user mannual for further details" name="form-values-script" id="form-values-script" class="btn btn-default btn-file">
+				</div>
+			</div>
+	
+                        
+                            <label for="toExclude"><font color="">Authentication Information</font></label><br><br>
+                            <div class="form-group">
+                                <label for="loginURL" class="col-sm-2 control-label">Login URL</label>
+                                <div class="col-sm-5">
+                                        <input type="text" title="<font color=white size=3px><b>Login URL</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+							    <br>
+								<ul>
+								<li>Specify the URL that contains the login form of the web application to be tested .<br></li>
+								<li>If your app/website is running ,you can go to the website and check the URL in the address bar</li>
+								</ul>
+							    
+							   </font>" data-placement="auto left" data-toggle="tooltip" name="loginURL" id="loginURL" placeholder="http://example.com/login" class="form-control" onclick="close_all();"></input>
+		                </div>
+                                <br><br>
+                                <label for="logoutURL" class="col-sm-2 control-label">Logout URL</label>
+				<div class="col-sm-5">
+                                        <input type="text" name="logoutURL" data-placement="auto left" data-toggle="tooltip" title ="<font color=white size=3px><b>Logout URL</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+							    <br>
+								<ul><li>Specify the logout URL of your web application to be tested.<br></li>
+								<li>If your app/website is running ,you can go to the website and check the URL .</li>
+								</ul>
+							    
+							   </font>" id="logoutURL" placeholder="http://example.com/logout" class="form-control" onclick="close_all();"></input>
+				</div>
+                                <br><br>
+			    </div>
+                            <div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Field name for Username</label>
+				<div class="col-sm-5">
+                                        <input id="toAuthUsernameField" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Username Field example</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;><br>&nbsp;&nbsp;<b>User name Field :</b><br><br>
+							    <ul><li>Specify the name/id of the form-element/text-field of your application that will have the user name /email /id or any other required credentials</li><br>
+								<li>If your app/wesbite is running ,you can right click on that field and from the opened menu go to inspect element option,that will read you the name or id of the field</li>
+								</ul></font></div>" name="toAuthUsernameField" class="form-control" width="20" rows="1" spellcheck="false" placeholder="Text_box_user"></input>                        
+                                </div>
+			    </div>
+
+				<div class="form-group">
+				<label for="toExclude" class="col-sm-2 control-label">Username</label>
+				<div class="col-sm-5">
+                                        <input id="username" data-placement="auto left" data-toggle="tooltip" title="Enter Username" name="username" class="form-control" width="20" rows="1" spellcheck="false"  onclick="close_all();" placeholder="UserName"></input>                        
+                                </div>
+				</div>
+			    <div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Field name for Password</label>
+                                <div class="col-sm-5">
+					<input id="toAuthPasswordField" name="toAuthPasswordField" data-placement="auto left" data-toggle="tooltip"  title="<font color=white size=3px><b>Password Field example</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;><br>&nbsp;&nbsp;<b>Password Field :</b><br><br>
+							    <ul><li>Specify the name/id of the form-element/text-field of your application that will have the Password or any other required credentials</li><br>
+								<li>If your app/wesbite is running ,you can right click on that field and from the opened menu go to inspect element option,that will read you the name or id of the field</li>
+								</ul></div>" class="form-control" width="20" rows="1" spellcheck="false" placeholder="Text_box_password"></input>
+                                </div>								
+			    </div>
+				<div class="form-group">
+				<label for="toExclude" class="col-sm-2 control-label">Password</label>
+				<div class="col-sm-5">
+                                        <input id="password" data-placement="auto left" data-toggle="tooltip" title="Enter Password" name="password" class="form-control" width="20" rows="1" spellcheck="false"  onclick="close_all();" placeholder="Password"></input>                        
+                                </div>
+				</div>
+							  
+			    <div class="form-group">
+			<label for="depth" class="col-sm-2 control-label">Depth of the Crawl</label>
+				<div class="col-sm-5">
+	                                <input id="depth" name="depth" data-placement="auto left" data-toggle="tooltip" title="Specify maximum depth of the crawl .(i.e.),the level till which crawler must go in at each individual workflow" type="text" class="form-control" placeholder="2">
+				</div>
+			</div>
+			    <div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Additional Parameters</label>
+                                <div class="col-sm-5">
+				        <input id="authParameters" name="authParameters" data-placement="auto left" title="<font color=white size=3px ><b>Additional Parameters</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+								<br>
+							    <ul>
+								<li>If your web application to be tested requires any additional authentication information apart from user name and password to login .For example :  <br></li>
+								<br><li>Registration no :133 ,Role : admin and  etc. <br>A user needs to specify all additional authentication parameters and their values in this section (parameter name :parameter value ) in a comma separated manner<br></li>
+								<br><li>
+								For example :
+								Role : admin , DOB : 01-01-2002 <br>The shown example assumes that the login form apart from <b>user name/email/id and password field</b> contains  two other text fields named as Role and the expected valid value is : admin.
+								The other expected parameter is DOB with expected valid value :01-01-2002<br></li>
+								<br><li><b>Therefore if any login form may have more then two authentication fields,the third one and the expected value of the third one is to be specified here</b><br></li>
+								<br><li><strong>Note !..  </strong> If there are no additional parameters at the login form,a user may leave this field blank or may specify a default value as none :none  </li>
+								
+								</ul>
+							    
+							   </font>" data-toggle="tooltip" class="form-control" width="20" rows="1" spellcheck="false" placeholder="field1:value1,field2:value2"></input>
+                                </div>	
+			    </div>
+			<div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Redis Server IP</label>
+                                <div class="col-sm-5">
+					<input id="redisIP" name="redisIP" data-placement="auto left" title="Enter Ip address on which redis server is running" data-toggle="tooltip" class="form-control" width="20" rows="1" spellcheck="false" placeholder="redisIP"></input>
+                                </div>								
+			    </div>
+			    <div class="form-group">
+                            <label for="roles" class="col-sm-2 control-label">Number of Roles</label>
+                            <div class="col-sm-5">
+                                <input type="number" data-placement="auto left" data-toggle="tooltip" title="Enter number of user roles" class="form-control" name="roles" id="roles" placeholder="1">
+                            </div>
+							
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember" value="remember"/> Remember these settings
+                                    </label>
+									<br>
+									
+									<label>
+                                        <input type="checkbox" name="parllel" id="parllel" value="parllel" onclick="open_parllel();"/> Are you running this scan as a parallel scan ?
+                                    </label>
+                                </div>
+							</div>
+						</div>
+						<div class="form-group" id="parllel_box" style="display:none">
+								 <label for="queueName" class="col-sm-2 control-label">Enter a valid virtual storage name</label>
+								<div  class="col-sm-5">
+								
+								<input id="queueName" name="queueName" class="form-control" width="20" rows="1" spellcheck="false" placeholder="Any valid name of 5 digits at least"></input>
+								</div>
+								
+						</div>
+                             
+                       
+                        
+                        <!-- A neat blue button! -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                
+                </div>
+							
+                        </div>
+						
+                        
+                        <!-- Set Query URL -->
+                        <!--<div class="form-group">
+                            <label for="queryURL" class="col-sm-2 control-label">Query URL</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="queryURL" id="queryURL" placeholder="http://example.com/query">
+                            </div>
+                        </div>-->
+                        
+                        <!-- CSRF - Yoyo! -->
+                        {% csrf_token %}
+                                
+                        
+                        
+                        
+                        
+             
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                
+                </div>
+</body>
+</html>

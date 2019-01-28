@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %} Add New Scan {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+                    <h1 class="page-header">Please start the proxy and browse through your application.</h1>
+
+                  <form method="POST" action="/variable_select_asynch">
+                        <!-- A neat blue button! -->
+			{% csrf_token %}
+			<input type="hidden" id="proj_name" type="text" name="proj_name" value="{{ project}}">
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                
+                </div>
+            </div>
+        </div>
+{% endblock %}

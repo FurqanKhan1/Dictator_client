@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+
+{% block title %} Add New Scan {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+<div class="col-sm-12 col-md-12 main" id="dashboard_area">
+
+               
+					{% if success == 'False' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error }}</div>{% endif %}
+					<div class="panel panel-primary">
+                            <div class="panel-heading" >
+                                <h3 class="panel-title" >
+                                     <label><font color="">Add a New Scan</font></label>
+                                </h3>
+                            </div>
+					<div class="panel-body">
+					{% if master_json %}
+									<div id="master_json_e" class="modal fade" role="dialog">
+									  <div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+										  <div class="modal-header" style="background-color:#336699;color:white">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Edit Master Profile &nbsp;<button type="button" class="btn btn-success" onclick="SaveProfile(1);">Save Details</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="ResetAll(1);">Reset All</button></h4>
+										  </div>
+										  <div class="modal-body">
+											<div class="table-responsive">
+											<table class="table table-condensed" style="word-wrap:break-word;">
+											{% for k,v in master_json.items %}
+											<tr><td><a href="#master_e_{{k}}" class="collapsed" data-toggle="collapse" style="font-size:14px"><font color="red"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;{{k}}</a></td>
+											<td style="display:inline-block;word-break:break-all;font-size:13px;">
+											<div id ="master_e_{{k}}" class="collapse">
+											<ul class="list-group">
+											{% for kk,vv in v.items %}
+											<li class="list-group-item"><font color="red">{{kk}} :</font> <font color="black"><b>{{vv}}</b></font><br><input type="checkbox" id="master_{{kk}}" onclick="Edit_Profile(1,0,'{{kk}}','{{k}}');" checked=True>&nbsp;Include</input> &nbsp;&nbsp;<a href="#">Edit</a></li>
+											
+											{% endfor %}
+											</ul>
+											</div>
+											</td></tr>
+											{% endfor %}
+											</table>
+											</div>
+											
+										  </div>
+										  <div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										  </div>
+										</div>
+
+									  </div>
+									</div>
+							{% endif %}
+					{% if analytical_json %}
+								<div id="analytical_json" class="modal fade" role="dialog">
+									  <div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+										  <div class="modal-header" style="background-color:#336699;color:white">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Analytical Profile</h4>
+										  </div>
+										  <div class="modal-body">
+											<div class="table-responsive">
+											<table class="table table-condensed" style="word-wrap:break-word;">
+											{% for k,v in analytical_json.items %}
+											<tr><td><a href="#analytical_{{k}}" class="collapsed" data-toggle="collapse" style="font-size:14px"><font color="red"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;{{k}}</a></td>
+											<td style="display:inline-block;word-break:break-all;font-size:13px;">
+											<div id ="analytical_{{k}}" class="collapse">
+											<ul class="list-group">
+											{% for kk,vv in v.items %}
+											<li class="list-group-item"><font color="red">{{kk}} :</font> <font color="black"><b>{{vv}}</b></font></li>
+											
+											{% endfor %}
+											</ul>
+											</div>
+											</td></tr>
+											{% endfor %}
+											</table>
+											</div>
+											
+										  </div>
+										  <div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										  </div>
+										</div>
+
+									  </div>
+									</div>
+					
+									<div id="analytical_json_e" class="modal fade" role="dialog">
+									  <div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+										  <div class="modal-header" style="background-color:#336699;color:white">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Edit Analytical Profile &nbsp;<button type="button" class="btn btn-success" onclick="SaveProfile(5);">Save Details</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="ResetAll(5);">Reset All</button></h4>
+										  </div>
+										  <div class="modal-body">
+											<div class="table-responsive">
+											<table class="table table-condensed" style="word-wrap:break-word;">
+											{% for k,v in analytical_json.items %}
+											<tr><td><a href="#analytical_e_{{k}}" class="collapsed" data-toggle="collapse" style="font-size:14px"><font color="red"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;{{k}}</a></td>
+											<td style="display:inline-block;word-break:break-all;font-size:13px;">
+											<div id ="analytical_e_{{k}}" class="collapse">
+											<ul class="list-group">
+											{% for kk,vv in v.items %}
+											<li class="list-group-item"><font color="red">{{kk}} :</font> <font color="black"><b>{{vv}}</b></font><br><input type="checkbox" id="analytical_{{kk}}" onclick="Edit_Profile(5,0,'{{kk}}','{{k}}');" checked=True>&nbsp;Include</input> &nbsp;&nbsp;<a href="#">Edit</a></li>
+											
+											{% endfor %}
+											</ul>
+											</div>
+											</td></tr>
+											{% endfor %}
+											</table>
+											</div>
+											
+										  </div>
+										  <div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										  </div>
+										</div>
+
+									  </div>
+									</div>
+							{% endif %}
+   
+                            {% if mandatory_json %}
+								<div id="mandatory_json" class="modal fade" role="dialog">
+									  <div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+										  <div class="modal-header" style="background-color:#336699;color:white">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title">Mandatory Profile</h4>
+										  </div>
+										  <div class="modal-body">
+											<div class="table-responsive">
+											<table class="table table-condensed" style="word-wrap:break-word;">
+											{% for k,v in mandatory_json.items %}
+											<tr><td><a href="#mandatory_{{k}}" class="collapsed" data-toggle="collapse" style="font-size:14px"><font color="red"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;{{k}}</a></td>
+											<td style="display:inline-block;word-break:break-all;font-size:13px;">
+											<div id ="mandatory_{{k}}" class="collapse">
+											<ul class="list-group">
+											{% for kk,vv in v.items %}
+											<li class="list-group-item"><font color="red">{{kk}} :</font> <font color="black"><b>{{vv}}</b></font></li>
+											
+											{% endfor %}
+											</ul>
+											</div>
+											</td></tr>
+											{% endfor %}
+											</table>
+											</div>
+											
+										  </div>
+										  <div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										  </div>
+										</div>
+
+									  </div>
+									</div>
+									<div id="mandatory_json_e" class="modal fade" role="dialog">
+									  <div class="modal-dialog modal-lg">
+
+										<!-- Modal content-->
+										<div class="modal-content">
+										  <div class="modal-header" style="background-color:#336699;color:white">
+											<span color="red"><button type="button" class="btn close btn-danger" data-dismiss="modal">&times;</button></span>
+											<h4 class="modal-title">Edit Mandatory Profile &nbsp;<button type="button" class="btn btn-success" onclick="SaveProfile(4);">Save Details</button>&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="ResetAll(4);">Reset All</button></h4>
+										  </div>
+										  <div class="modal-body">
+											<div class="table-responsive">
+											<table class="table table-condensed" style="word-wrap:break-word;">
+											{% for k,v in mandatory_json.items %}
+											<tr><td><a href="#mandatory_e_{{k}}" class="collapsed" data-toggle="collapse" style="font-size:14px"><font color="red"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;{{k}}</a></td>
+											<td style="display:inline-block;word-break:break-all;font-size:13px;">
+											<div id ="mandatory_e_{{k}}" class="collapse">
+											<ul class="list-group">
+											{% for kk,vv in v.items %}
+											<li class="list-group-item"><font color="red">{{kk}} :</font> <font color="black"><b>{{vv}}</b></font><br><input type="checkbox" id="mandatory_{{kk}}" onclick="Edit_Profile(5,0,'{{kk}}','{{k}}');" checked=True>&nbsp;Include</input> &nbsp;&nbsp;<a href="#">Edit</a></li>
+											
+											{% endfor %}
+											</ul>
+											</div>
+											</td></tr>
+											{% endfor %}
+											</table>
+											</div>
+											
+										  </div>
+										  <div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										  </div>
+										</div>
+
+									  </div>
+									</div>
+							{% endif %}
+                    <form class="form-horizontal" role="form" method="POST" action="/scan/">
+                        <label for="toExclude"><font color="">Project Information</font></label><br><br>
+                        <!-- Set project name -->
+                        <div class="form-group">
+                            <label for="Project_name" class="col-sm-2 control-label"><font color="cornflowerblue"><span class="glyphicon  glyphicon-folder-close"></span></font>&nbsp;&nbsp;Project Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="Project_name" id="Project_name" placeholder="Project_1" >
+								<font color="red">{{ form.errors.Project_name }}</font>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- CSRF - Yoyo! -->
+                        {% csrf_token %}
+                            
+                              <div class="form-group">
+                                	<label for="Port_range" class="col-sm-2 control-label"><font color="cornflowerblue"><span class="glyphicon  glyphicon-list-alt"></span></font>&nbsp;&nbsp;Port Range</label>
+									<div class="col-sm-8">
+                                   <input type="text" name="Port_range" id="Port_range" placeholder="1-20000" class="form-control"></input>
+									<font color="red">{{ form.errors.Port_range }}</font>
+									</div>
+			    				</div>
+                            <div class="form-group">
+                                <label for="Switch" class="col-sm-2 control-label"><font color="cornflowerblue"><span class="glyphicon  glyphicon-cog"></span>&nbsp;<span class="glyphicon  glyphicon-wrench"></span>&nbsp;&nbsp;</font>Switch</label>
+								<div class="col-sm-8">
+                                        <select name="Switch" id="Switch" class="form-control">
+										{% for switch in switches %}
+										 <option value ={{ switch.id }}>{{ switch.name }}</option>
+										{% endfor %}
+										</select>
+								<font color="red">{{ form.errors.Switch}}</font>
+                                </div>
+			    			</div>
+			    			<div class="form-group">
+								<label for="Mode" class="col-sm-2 control-label"><font color="cornflowerblue"><span class="glyphicon  glyphicon-list"></span></font>&nbsp;&nbsp;Scan Mode</label>
+								<div class="col-sm-8">
+                                 <select id="Mode" name="Mode" class="form-control">
+									<option value="sequential">Sequential</option>
+									<option value="concurrent">Concurrent</option>
+									<option value="sequential_default">Sequetial Default</option>
+								</select>
+								<font color="red">{{ form.errors.Mode }}</font>                   
+                     	       </div>
+			    			</div>
+							<div class="form-group">
+                                <label for="Ip_range" class="col-sm-2 control-label"><font color="cornflowerblue"><span class="glyphicon  glyphicon-screenshot"></span></font>&nbsp;&nbsp;IP/IP_Range</label>
+                                <div class="col-sm-8">
+                                        <Textarea name="Ip_range" id="Ip_range" placeholder="192.168.179.133,192.168.179.134" rows="7" class="form-control"></Textarea>
+										<font color="red">{{ form.errors.IP_range }}</font>
+		                	</div>
+
+							</div>
+							<div class="form-group">
+                                <label for="Scan Profile" class="col-sm-2 control-label"><font color="cornflowerblue"><span class="glyphicon  glyphicon-screenshot"></span></font>&nbsp;&nbsp;Scan Profile</label>
+                                <div class="col-sm-8">
+                                        <div class="radio"><input type="radio" id="profile" name="profile" value="1" onclick="Store_profile(1);">Master &nbsp;<a href="#">View</a></div>
+										<div class="radio"><input type="radio" id="profile" name="profile" value="2" onclick="Store_profile(2);">Mandatory &nbsp;<a href="#/" data-target="#mandatory_json" data-toggle="modal">View</a></div>
+										<div class="radio"><input type="radio" id="profile" name="profile" value="3" onclick="Store_profile(3);">Analytical &nbsp;<a href="#/" data-target="#analytical_json" data-toggle="modal">View</a></div>
+										<div class="radio"><input type="radio" id="profile" name="profile" value="3" onclick="Store_profile(4);">Customize Mandatory &nbsp;<a href="#/" data-target="#mandatory_json_e" data-toggle="modal">View and Edit</a></div>
+										<div class="radio"><input type="radio" id="profile" name="profile" value="3" onclick="Store_profile(5);">Customize Analytical &nbsp;<a href="#/" data-target="#analytical_json_e" data-toggle="modal">View and Edit</a></div>
+										{% if custom_profile %}
+										<div class="radio">
+										<table>
+										<tr><td><select name="custom_profile_list" id="custom_profile_list" onchange="show_div(this.value);" class="form-control">
+					
+									<option value="01">Master</option>
+										<option value="02">Mandatory</option>
+									<option value="03">Analytical</option>
+										{% if custom_profile %}
+										{% for profile in custom_profile %}
+					
+										<option value="{{ profile.id }}">{{ profile.name }}</option>
+										{% endfor %}
+				
+				
+										{% endif %}
+										</select>
+											</td></tr>
+											</table>
+										</div>
+
+										{% endif %}
+										<div id="link_container"></div>
+										<input type="hidden" name="profile_value" id="profile_value">
+										<input type="hidden" name="profile_json" id="profile_json">
+										<input type="hidden" name="edit_profile" id="edit_profile">
+										<font color="red">{{ form.errors.profile }}</font>
+		                	</div>
+
+							</div>
+			            <!-- A neat blue button! -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+					<div id="profile_container" style="display:none"></div>
+                	</div>
+					</div>
+                </div>
+            </div>
+        </div>
+<script>
+var mandatory_json=jQuery.parseJSON("{{ m_json|escapejs }}");
+var analytical_json=jQuery.parseJSON("{{ a_json|escapejs }}");
+var profile_json={};
+var custom_json={};
+var master_json=jQuery.parseJSON("{{ ms_json|escapejs }}");
+function show_div(source)
+{
+		//alert(source);
+		if ((source =="01")  ||(source =="02") || (source =="03"))
+			{
+				if (soutrce =="01")
+		$('#link_container').html("<a href=#/ data-target=#master_json_e data-toggle=modal>View Profile</a> &nbsp;<a href=# onclick=close_me(1);> Exit </a>");
+				else if (source =="02")
+			$('#link_container').html("<a href=#/ data-target=#mandatory_json_e data-toggle=modal>View Profile</a> &nbsp;<a href=# onclick=close_me(1);> Exit </a>")
+				else
+				$('#link_container').html("<a href=#/ data-target=#analytical_json_e data-toggle=modal>View Profile</a> &nbsp;<a href=# onclick=close_me(1);> Exit </a>")
+			}
+		else
+		$('#link_container').html("<a href=# onclick=Show_profile("+source+");>View Profile</a> &nbsp;<a href=#/ onclick=close_me(1);> Exit </a>");
+  	//$('#custom_'+source).show();
+}
+function Show_profile(source)
+{
+	alert(source);
+}
+function close_me(source)
+{
+		$('#link_container').html('');
+		//alert(1);
+  	//$('#'+source).hide();
+}
+	function SaveProfile(p_value)
+	{
+		if ((p_value==4) || (p_value ==5))
+		{
+			$('#edit_profile').val("1");
+			if (p_value==4)
+			{
+				$('#profile_json').val(JSON.stringify(mandatory_json));
+				alert($('#profile_json').val());
+			}
+			else
+			{
+				$('#profile_json').val(JSON.stringify(analytical_json));
+				alert($('#profile_json').val());
+			}
+		}
+		else
+			alert("In valid Choice");
+	}
+	function ResetAll(p_value)
+	{
+		if ((p_value==4) || (p_value ==5))
+		{
+			$('#edit_profile').val("0");
+			if (p_value==4)
+			{
+				mandatory_json=jQuery.parseJSON("{{ m_json|escapejs }}");
+				for (var service_name in mandatory_json)
+				{
+					//alert(service_name);
+					if (mandatory_json.hasOwnProperty(service_name))
+					{
+					for (var i=0;i < mandatory_json[service_name]["Test_cases"].length;i++)
+					{
+							id=mandatory_json[service_name]["Test_cases"][i];
+							if($('#mandatory_'+id).prop("checked")==false)
+							{
+								//alert ("Found false for id : " +id);
+								$('#mandatory_'+id).prop("checked",true);
+								//alert("Set to true");
+							}
+					}
+
+					
+					}
+				}
+				$('#profile_json').val(JSON.stringify(mandatory_json));
+				alert("Successfully Restored All values ");
+			}
+			else
+			{
+				analytical_json=jQuery.parseJSON("{{ a_json|escapejs }}");
+				for (var service_name in analytical_json)
+				{
+					if (analytical_json.hasOwnProperty(service_name))
+					{
+					for (var i=0;i < analytical_json[service_name]["Test_cases"].length;i++)
+					{
+							id=analytical_json[service_name]["Test_cases"][i];
+							$('#analytical_'+id).prop("checked",true);
+					}
+
+					
+					}
+				}
+				$('#profile_json').val(JSON.stringify(analytical_json));
+				alert("Successfully Restored All values ");
+			}
+		}
+		else
+			alert("In valid Choice");
+	}
+	function Store_profile(p_value)
+	{
+			$('#profile_value').val(p_value);
+			if ((p_value ==4) || (p_value==5))
+			{
+				if (p_val==4)
+				$('#profile_json').val(JSON.stringify(mandatory_json));
+				else
+				$('#profile_json').val(JSON.stringify(analytical_json));
+			}
+			else
+				$('#profile_json').val('');
+			
+	}
+	function Edit_Profile(profile_id,action_id,test_case_id,service_name)
+	{
+			//alert(test_case_id);
+			//alert(service_name);
+			if (profile_id==4)
+				{
+						
+						if($('#mandatory_'+test_case_id).prop("checked")==true)
+								{
+									mandatory_json[service_name]["Test_cases"].push(test_case_id);
+									
+								}
+						else
+							{
+								for (var i=0;i < mandatory_json[service_name]["Test_cases"].length;i++)
+									{
+										e=mandatory_json[service_name]["Test_cases"][i];
+										if (e==test_case_id)
+										{
+											mandatory_json[service_name]["Test_cases"].splice(i,1);
+											
+										}
+										
+
+									}
+							}
+								
+				}
+			else if(profile_id==5)
+				{
+						if($('#alalytical_'+test_case_id).prop("checked")==true)
+								{
+									alalytical_json[service_name]["Test_cases"].push(test_case_id);
+									
+								}
+						else
+							{
+								for (var i=0;i < alalytical_json[service_name]["Test_cases"].length;i++)
+									{
+										e=alalytical_json[service_name]["Test_cases"][i];
+										if (e==test_case_id)
+										{
+											alalytical_json[service_name]["Test_cases"].splice(i,1);
+											
+										}
+										
+
+									}
+							}
+				}
+			else
+				{
+					alert("Cant Edit the Chosen Profile");
+					return;
+				}
+			//alert(parent_json);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+ <h2 class="sub-header">Details</h2>
+                    {% if error=='False' %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" style="font-size:100%">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Discovery Status</th>
+                                    <th>Vulnerability Scanning Status</th>
+									<th>Action</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for project in data %}
+                                <tr>
+                                    
+                                    <td width="100">{{ project.name }}</td>
+                                    <td style="color:green"><strong>{{ project.project_status}}</strong></td>
+                                    <td style="color:green"><strong>{{ project.project_status_exploits}}</strong></td>
+									{% if project.project_status == 'complete' and project.project_status_exploits == 'complete' %} <td><a href="/report?proj_id={{ project.id }}">Download Report {{ project.name }}</a></td>
+									{% elif project.project_status == 'complete' and project.project_status_exploits == 'incomplete' or project.project_status == 'processing' or project.project_status_exploits == 'processing' %}
+                                    <td><a href="/restore_state?proj_id={{ project.id }}">Ongoing</a></td>
+									{% elif project.project_status == 'paused' or project.project_status_exploits == 'paused' %}
+                                    <td><form method="post" action="/resume_scan/"><button class="btn btn-danger btn-lg">Resume</button><input type="hidden" id="project_id" name="project_id" value="{{ project.id }}"></input></form></td>
+									{% endif %} 
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p>No projects yet!</p>
+                    {% endif %}
+                </div>
+            
+{% endblock %}
+
+{% block scripts %}
+        <script>
+        </script>
+{% endblock %}
+

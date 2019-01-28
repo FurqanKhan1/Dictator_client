@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    
+    <!--Import materialize.css-->
+ 
+
+
+    <!--Let browser know website is optimized for mobile-->
+   
+
+  
+    <script type="text/javascript" src="static/js/d3.v3.min.js"></script>
+    <script type="text/javascript">
+    	$.ajaxSetup({
+		
+    beforeSend: function(xhr, settings) {
+        if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE') {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    		}
+		});
+
+
+       $( document ).ready(function() {
+		//alert("hello world");
+		 $('[data-toggle="tooltip"]').tooltip({html: true}); 
+        $('#readjsondata').click(function(){
+          getJsonDataFile();
+        })
+
+
+        /*
+         $(".get-workflow").click(function() {
+          console.log("button clicked")
+          var id = $(this).closest("tr")   // Finds the closest row <tr>
+                       .find(".id")     // Gets a descendent with class="nr"
+                       .text();         // Retrieves the text within <td>
+
+
+       $.ajax({
+           type: 'post',
+           url: 'runcrawl/',
+           data: {'id': id},
+
+           success: function(server_response){
+
+               server_data = JSON.parse(server_response);
+             if(server_data.success == 1)//if ajax_check_username.php return value "0"
+               {
+                console.log("running crawl")
+                //updateCrawlLog()
+               }
+            else
+            {
+                console.log("unable to run crawl")
+            }
+          }
+
+        });
+      });
+
+    */
+
+
+
+        $(".use-address").click(function() {
+        	console.log("button clicked")
+   			 var id = $(this).closest("tr")   // Finds the closest row <tr>
+                       .find(".id")     // Gets a descendent with class="nr"
+                       .text();         // Retrieves the text within <td>
+
+
+			 $.ajax({
+			     type: 'post',
+    			 url: 'runcrawl/',
+     			 data: {'id': id},
+
+     			 success: function(server_response){
+
+           		 server_data = JSON.parse(server_response);
+         		 if(server_data.success == 1)//if ajax_check_username.php return value "0"
+         		   {
+             		console.log("running crawl")
+                //updateCrawlLog()
+         		   }
+         		else
+         		{
+             		console.log("unable to run crawl")
+         		}
+     		}
+
+    });
+    //updateCrawlLog()
+		    	       // Outputs the answer
+		});
+    })
+
+      function getJsonDataFile(){
+        $.ajax({
+              type: 'post',
+              url: 'readJsonDataFile/',
+
+              success: function(server_response){
+                  server_data = JSON.parse(server_response);
+            
+                  console.log(JSON.parse(server_data.jsondata))
+
+             }
+
+        });
+      } 
+
+
+      function updateCrawlLog(){
+        console.log("updating crawl log");
+      	 var myLog = setInterval(function(){
+           $.ajax({
+              type: 'post',
+              url: 'updatelog/',
+
+              success: function(server_response){
+                  server_data = JSON.parse(server_response);
+                  console.log(server_data)
+                  $("#log-table tr").remove();
+                  log = server_data.log.split("|||");
+                  table_rows = "";
+                  log_length = log.length
+                  for (var i = 0; i < log_length; i++) {
+                        table_rows+="<tr><td>"+log[i]+"</td></tr>";
+                  }
+                  $("#log-table").append(table_rows);
+
+                  if(server_data.end == 1)//if ajax_check_username.php return value "0"
+                    {
+                     console.log("end log");
+                     clearInterval(myLog);
+                    }
+             }
+
+        });
+      }, 3000);
+
+      }
+
+
+
+
+
+    </script>
+
+
+
+</head>
+
+<body>
+    <!--Import jQuery before materialize.js-->
+
+
+
+
+   
+           
+
+            <!--         	<p class="flow text"><h3>Crawler Specifications</h3><font color="black"></p>
+ -->
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+			 <h1><img src="static/img/black-spider.png">
+           <a href="#" class="brand-logo white-text">&nbsp;&nbsp;AJAX CRAWLER </a></h1>
+			  <h3 class="page-header">Crawler Specifications<h3>
+                
+
+                    <form id="upload" class="form-horizontal" role="form" action="/crawl" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+                    		
+                            <div class="form-group">
+								<div class="fileinput fileinput-new" data-provides="fileinput">
+									<label for="login-script" class="col-sm-3 control-label"><small>Login Script</small></label>
+									 <div class="col-sm-5">
+									<input type="file" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Login Script Example</b></font><br>Login Script file is the HTML file which would have been created with the help of selinium tool and would contain the Login Credentials.<br>
+									Please reffer to user mannual for further details"
+									name="login-script" id="login-script" class="btn btn-default btn-file">
+									<div class="fileinput fileinput-new" data-provides="fileinput">
+										<!--<input class="fileinput-new" type="text">-->
+									</div>
+									 </div>
+								</div>
+							</div>
+
+                            <div class="form-group">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <label for="form-values-script" class="col-sm-3 control-label"><small>Form Values File</small></label>
+									<div class="col-sm-5">
+                                    <input type="file" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Form Values Script Example</b></font><br>Form Values Script file is the HTML file which would have been created with the help of selinium tool and would contain the valid values for various input forms.<br>
+									Please reffer to user mannual for further details" name="form-values-script" id="form-values-script" class="btn btn-default btn-file">
+                                
+                                <div class="file-path-wrapper">
+                                    <!--<input class="fileinput-new" type="text">-->
+                                </div>
+									</div>
+									</div>
+                            </div>
+
+
+
+
+	                       
+
+	                            <div class="form-group">
+								<label for="login-url" class="col-sm-3 control-label"><small>Login Url</small></label>
+								<div class="col-sm-6">
+	                                <input id="login-url" title="<font color=white size=3px><b>Login URL</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+							    <br>
+								<ul>
+								<li>Specify the URL that contains the login form of the web application to be tested .<br></li>
+								<li>If your app/website is running ,you can go to the website and check the URL in the address bar</li>
+								</ul>
+							    
+							   </font>" data-placement="auto left" data-toggle="tooltip" name="login-url" type="text" class="form-control">
+								</div>
+	                                
+	                            </div>
+
+	                            <div class="form-group">
+								
+								<label for="base-address" class="col-sm-3 control-label"><small>Base-Address</small></label>
+								<div class="col-sm-6">
+	                                <input id="base-address" title="<font color=white size=3px><b>Base Address</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+							    <br>
+								<ul>
+								<li>Specify the URL that contains the Base address of your web application .<br></li>
+								<li>If your app/website is running ,you can go to the website and check the URL in the address bar</li>
+								</ul>
+							    
+							   </font>" data-placement="auto left" data-toggle="tooltip" name="base-address" type="text" class="form-control">
+									</div>
+	                                
+	                            </div>
+
+	                            <div class="form-group">
+								<label for="start-url" class="col-sm-3 control-label"><small>Start Url</small></label>
+								<div class="col-sm-6">
+	                                <input id="start-url" data-placement="auto left"  data-toggle="tooltip" title="<font color=white size=3px><b>Start Url Example</b></font><br>Kindly Specify :<br>The protocol (http,https ,etc)<br> The domain name (localhost or etc) <br> The  app name (if present)<br> The index page/start page<br>
+							<br>
+							For eg : 
+							<ul>
+							<li>
+							
+							Example 1 :http://localhost:8000/MYapp/index.jsp
+							</li>
+							<li>
+							Example 2 (Without app name):  http://www.mysite.com/index.php
+							
+							</li></ul>
+							<br>
+							Note :Specify start Url only when there would be no Login URL in the application" name="start-url" type="text" class="form-control">
+								</div>
+	                                
+	                            </div>
+	                        
+
+
+	                        
+    	                        <div class="form-group">
+								<label for="black-list-urls" class="col-sm-3 control-label"><small>Black List Urls (Give a List Comma Separated)</small></label>
+								<div class="col-sm-6">
+	                                <input id="black-list-urls" data-placement="auto left" data-toggle="tooltip" title="Specify Urls that u do not wish to be crawled" name="black-list-urls" type="text" class="form-control">
+									</div>
+	                                
+	                            </div>
+	                            <div class="form-group">
+								<label for="scope-urls" class="col-sm-3 control-label"><small>Scope-Urls (Give a List comma separated)</small></label>
+								<div class="col-sm-6">
+                                	<input id="scope-urls" data-placement="auto left" data-toggle="tooltip" title="If your application has got multiple domains,specify all the domains that you wish to fall under scope of crawler" name="scope-urls" type="text" class="form-control">
+									</div>
+                                	
+                            	</div>
+
+                            	<div class="form-group">
+								<label for="wait-time" class="col-sm-3 control-label"><small>Global Wait Time</small></label>
+								<div class="col-sm-6">
+                          	      <input id="wait-time" name="wait-time" data-placement="auto left" data-toggle="tooltip" title="Specify maximum wait time for scan" type="text" class="form-control">
+								  </div>
+                            	    
+                            	</div>
+
+	                        
+
+                           
+                                <div class="form-group">
+								 <label for="depth" class="col-sm-3 control-label"><small>Depth of the Crawl</small></label>
+								 <div class="col-sm-6">
+	                                <input id="depth" name="depth" type="text" data-placement="auto left" data-toggle="tooltip" title="Specify maximum depth of the crawl .(i.e.),the level till which crawler must go in at each individual workflow" class="form-control">
+									</div>
+	                               
+	                            </div>
+<!--                              <div class="input-field col s4">
+                                  <input id="proxy-address" name="proxy-address" type="text" class="validate">
+                                  <label for="proxy-address">Proxy Address</label>
+                              </div>
+ -->
+
+                            
+                        	<center>
+                           	 	<button class="btn waves-effect waves-light grey darken-3" type="submit" name="action">Submit
+ 	                           </button>
+    	                    </center
+
+                	</form>
+                	
+
+
+
+                
+                
+
+               
+                   
+					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#demo">Latest  Runs</button>
+						<div id="demo" class="collapse">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th data-field="id">id</th>
+                                    <th data-field="base-address">base-address</th>
+                                    <th data-field="start-url">start-url</th>
+                                    <th data-field="scope-urls">scope-urls</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for item in crawl_list %}
+                                <tr>
+                                    <td class="id">{{ item.id }}</td>
+                                    <td>{{ item.base_address }}</td>
+                                    <td>{{ item.start_url }}</td>
+                                    <td>{{ item.scope_urls }}</td>
+                                    <!-- <td>
+                                        <button class="use-address btn waves-effect waves-light" class="submit" name="action">Get Workflow</button>
+                                    </td> -->
+                                    <td><a href="runcrawl?id={{item.id}}">Run Again</a></td>
+                                    <td><a href="getworkflow?id={{item.id}}">Execute Workflow</a></td>
+<!--                                     <td>
+                                        <button class="get-workflow btn waves-effect waves-light" class="submit" name="action">Workflow</button>
+                                    </td>
+ -->                                    
+
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+						</div>
+
+                    
+            
+
+           
+      				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse1">Log</button>
+      				<div class="collapse" id="collapse1">
+      					<div>
+      						<table class="striped" id="log-table">
+      						 	<tr><td>Hello</td></tr>
+      						 	<tr><td>World</td></tr>
+      						</table>
+      					</div>
+
+      				</div>
+					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse2">Graph</button>
+					<div class="collapse" id="collapse2"> <a href="graph">Show Graph</a>  </div>
+			</div>
+    			
+ 
+
+               
+      
+</body>
+
+
+
+
+  </html>

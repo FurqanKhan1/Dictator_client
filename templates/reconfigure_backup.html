@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %} Details -- {{ project_name }} {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+					{% if error == 'True' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>{% endif %}
+
+                    <h1 class="page-header">Details - {{ project_id }}</h1>
+				<div class="container">
+					<table width="100%" border="1" id="demo_datatables">
+									<thead>
+									<tr>
+									<th>Order Id</th>
+									<th>Item</th>
+									<th>Qty</th>
+									<th>Price</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr>
+									<td>1</td>
+									<td>Pizza</td>
+									<td>1</td>
+									<td>345</td>
+									</tr>
+									<tr>
+									<td>2</td>
+									<td>Garlic Bread</td>
+									<td>3</td>
+									<td>120</td>
+									</tr>
+									<tr>
+									<td>3</td>
+									<td>Coke</td>
+									<td>7</td>
+									<td>70</td>
+									</tr>
+									<tr>
+									<td>4</td>
+									<td>Pasta</td>
+									<td>2</td>
+									<td>210</td>
+									</tr>
+									</tbody>
+									<tfoot>
+									<tr>
+									<td colspan="3">Total</td>
+									<td>745</td>
+									</tr>
+									</tfoot>
+								</table>
+							</div>
+							
+
+                    {% if just %}
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <span class="glyphicon glyphicon-floppy-saved"></span> <strong> Done!</strong> You can view and reconfigure details discovered of your scan here. 
+                    </div>
+                    {% endif %}
+                    <div id="details_area">
+
+    
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Project Configuration Obtained
+                                </h3>
+                            </div>
+                          
+                            <div class="panel-body">
+                                
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Project Name</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">{{ project_id }}</p>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </div>
+                            
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Configuration Details</h3>
+								
+                            </div>
+							<br>               									
+							<div class="panel-body">
+								<br>
+								
+                                <table id="my_table" class="tablesorter" style="font-size:100%">
+                                    <thead class="thead-inverse">
+                                        <tr>
+                                            <th class="col-md-1">
+                                                Host
+                                            </th>
+											<th class="col-md-1">
+                                                Port
+                                            </th>
+											<th class="col-md-1">
+                                                Service
+                                            </th>
+											<th class="col-md-1">
+                                                Type
+                                            </th>
+											<th class="col-md-5">
+                                               Commands Associated
+                                            </th>
+											<th class="col-md-1">
+                                               Reconfigure
+                                            </th>
+											
+                                        </tr>
+                                    </thead>
+                                    {% for data in content %}
+									<tbody>
+                                    <tr>
+                                        <td class="col-md-1"> <b>{{ data.host }}</b></td>
+										<td class="col-md-1"> <b>{{ data.port }}</b></td>
+										<td class="col-md-1"> <b>{{ data.service }}</b></td>
+										<td class="col-md-1"> <b>{{ data.service_type }}</b></td>
+										<td class="col-md-5"> 
+										<b><a href="#command_{{data.id}}" id="scan_slider" style="text-decoration:none"
+										 data-toggle="collapse" >Commands</a></b>
+											<div id="command_{{data.id}}" class="collapse">
+												<table class="table">
+												{% for c in data.Commands %}
+												 <tr><td style="background-color:#dff0d8">Include</td><td>{{ c.include }}</td></tr>
+												<tr><td style="background-color:#dff0d8">ID</td><td>{{ c.id }}</td></tr>
+												<tr><td style="background-color:#dff0d8">Arguments</td><td>
+														<div> {{c.args }}
+														
+														</div>
+																	</td></tr>
+												<tr><td><br></td><td></td></tr>
+												{% endfor %}
+												</table>
+												
+											</div>
+										</td>
+										<td class="col-md-1"> <b><a href="#">Reconfigure</a></b></td>
+																					
+									</tr>
+					
+	               					{% endfor %}
+									</tbody>
+                                </table>
+                            </div>
+
+                            
+                        </div>
+						   
+                    </div>
+                </div>
+           
+{% endblock %}
+

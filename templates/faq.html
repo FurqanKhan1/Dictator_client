@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content%}
+<div class="col-sm-12 col-md-12 main img-responsive" id="dashboard_areaa" style="background-color :white;color:black;background-repeat:repeat;height:100%">
+
+<div>
+    <div class="row"> 
+        <div class="">
+            <div class="sub-header"><h2><font color="cornflowerblue"><span class="glyphicon  glyphicon-user"></span>&nbsp;&nbsp;</font>Hello {{ request.user.first_name }}</h2>
+			</div>
+		<br>	
+		</div>
+		<div class="table-responsive" style="color:white">
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#services_" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;&nbsp;<font size="6em">  What are the Services that have test cases mapped <font color="green">?? </font></font></a>
+				<div id="services_" class="collapse" style="font-size:2em;color:black">
+							<ul class="list-group">
+								{% if faq %}
+								{% for service in faq %}
+								<li class="list-group-item"><font color="green"><span class="glyphicon glyphicon-folder-close"></span></font>&nbsp;&nbsp;<font size="2em">{{service}}</font></li>
+								{% endfor %}
+								{% endif %}
+							</ul>
+				</li>			
+				<li class="list-group-item"><a href="{{video_url}}" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;&nbsp;</font><font size="6em">Do we have Viedo Tutorials for usage <font color="green">??</font> </font></a></li>
+				<li class="list-group-item"><a href="#Scan_modes" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;&nbsp;<font size="6em">  What are different Modes of Scanning<font color="green">?? </font></font></a>
+				<div id="Scan_modes" class="collapse" style="font-size:2em;color:black">
+				<ul class="list-group">
+											
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;Sequential Mode: In sequential mode, the tool would start with the discovery followed by reconfiguration and then it will start service scanning.
+				Thus, it is a three step process.</font>
+				</li>
+				<li class="list-group-item"><font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;Concurrent Mode: </font>
+				<ul class="list-group">
+				<li class="list-group-item"><font size= "2em">In Sequential mode, the service scanning would have not started till port scanning results would be available for
+				all the ports and hosts scanned. Thus, a pen tester may have to wait to obtain results and also in this mode, the pen tester
+				does not have control over which services he would want to scan first and which later.
+				All the services are scanned in one go, limiting granularity of control over service scanning.
+				These are the limitations of the sequential mode that are handled by the concurrent mode.</font>
+				</li>
+				<li class="list-group-item"><font size= "2em">
+					The Concurrent mode offers the flexibility to launch service scanning the moment service discovery would be finished and
+					further gives an option to launch service scanning for selective services based upon pen testers choice.</font>
+				</li>
+				</ul>
+				</li>
+				<li class="list-group-item"><font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span> &nbsp;&nbsp; Sequential Default Mode: With this mode the service scanning would start immediately after discovery would be over, 
+				skipping the reconfiguration phase. 
+				The utility of this mode is more relevant in case of scheduling scans where the pen tester may schedule scans to start at some 
+				time and may not be available to do the reconfiguration and may want to proceed with default port scanning .
+				Thus this mode of scan empowers the users to schedule and run discovery and service scanning automatically. </font>
+				</li>
+				</ul>
+							
+				
+				</div>
+				</li>
+				<li class="list-group-item"><a href="#service_types" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;&nbsp;<font size="6em"> Understanding Service Types (existing , new ,unknown )<font color="green">?? </font></font></a>
+				<div id="service_types" class="collapse" style="font-size:2em;color:black">
+				<ul class="list-group">
+											
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;Existing: Any discovered service (by nmap) that would have test cases mapped against it in the backend System ,would be having the status as Existing.
+				Thus existing would essentially signify that a person can proceed with service scanning for that particular service.
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;New : Right now there are test cases mapped aginst 58 services which are most commonly discovered in day to day PT process.
+				There could be occassions that the service discovered by nmap could be a,one which does not have test cases mapped against them.
+				Such kind of services would be having status as New.
+				For such use cases its advisable to run the testcases seperately (manually) ,and in order to help us improve the coverage of the tool ,you may forward details of 
+				such testcases (service and testcase scripts to be included) at the admin email : "dictator.paladion@gmail.com".
+				<br>
+				We on the backend , will include such services /test cases and thus would help in evelution of the tool and better future coverage.
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span> &nbsp;&nbsp; Unknown : There could be occassions where in nmap might not be able to detect the service running on the open port .
+				In such cases the type of service would be flagged as "unknown" ,in such scenerios it is recommended to manually identify the service and then reconfigure it 
+				to be of type discovered.
+				</font></li>
+				</ul>
+							
+				
+				</div>
+				</li>
+				<li class="list-group-item"><a href="#reconfig" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;&nbsp;<font size="6em"> Understanding Reconfiguration Phase<font color="green">?? </font></font></a>
+				<div id="reconfig" class="collapse" style="font-size:2em;color:black">
+				<ul class="list-group">
+											
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;Reconfiguration Phase: In order to reduce the false positives and to eliminate the false negatives,
+				we provide the pen tester the capability to analyze the port scanning results before getting into service scanning.
+				Based upon the analysis, a pen tester can reconfigure the obtained results, i.e., change service, port, host and can 
+				also add a missed port, host or service.
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;Reconfiguration of service helps to map services of unknown types to known types.
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span> &nbsp;&nbsp; Reconfiguration helps to reduce false positives by manually validating the discovered service for its correctness using the service version option.
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span> &nbsp;&nbsp;Adding test cases gives the user the flexibility to reduce the false negatives by adding a host, port service that Nmap might have missed but might be actually present.
+				</font></li>
+				</ul>				
+				</div>
+				</li>
+				<li class="list-group-item"><a href="#reporting" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;&nbsp;<font size="6em"> Understanding Reporting Capabilities<font color="green">?? </font></font></a>
+				<div id="reporting" class="collapse" style="font-size:2em;color:black">
+				<ul class="list-group">
+											
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp;Nmap Report Upload :To use it ,go to Upload Reports and choose Nmap report .
+				<br>Its a result importer module, 
+				which can read the results from an existing Nmap.xml report file and can 
+				import the findings in our custom database, and further use these findings in order 
+				to launch test cases/service scan. Thus, this leaves the user with the flexibility to use
+				our tool in both modes (1) Discovery and service scanning together (2) Service scanning mode alone.
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;&nbsp; Qualys and Nessus Report Parsers:<br>
+				To use this option Go to Upload reports tab and select either Qualys/Nessus Report.
+				<br>
+				We have a report merging module,
+				which would merge the results obtained from Qualys, 
+				Nessus and manual test cases. In order to merge the reports,
+				they have to be parsed first .We have  Qualys, Nmap and Nessus 
+				report parsers. All of them will take a report in XML format and would parse the report and
+				place it in local storage so that querying and integrating the results with other reports becomes easier. 
+				</font></li>
+				<li class="list-group-item">
+				<font size= "2em"><span class="glyphicon  glyphicon-info-sign"></span> &nbsp;&nbsp; Report Merger :
+				<br>
+				To use this option Go to Merge reports tab and select teh ID/Name of the manual project
+				with which you wish to integrate the qualys and nessus Results.
+				<br>
+				This module merges the manual test cases, 
+				parsed Qualys report, parsed Nessus report and would also map the CVEs
+				to exploits and finally, would provide the user an option to download the
+				integrated reports in any of the format amongst (XML, HTML, CSV, JSON)
+				thus providing one consolidated view for analysis.
+				</font></li>
+				
+				</ul>				
+				</div>
+				</li>
+			</ul>
+				
+    </div>
+	<div class="row"></div>
+</div>
+</div>
+{% endblock %}

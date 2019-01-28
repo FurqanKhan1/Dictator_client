@@ -1,0 +1,188 @@
+<html>
+<head>
+</head>
+<body><div id="session_content_all" style="border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:gray">
+					<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+
+
+		<!-- Heading! -->
+                    <h1 class="page-header">Add a New Application Logic Vulnerability Scan</h1>
+
+                    
+
+                    <form class="form-horizontal" role="form" method="POST" action="/session_all" enctype="multipart/form-data" >
+                        <label for="toExclude"><font color="">Project Information</font></label><br><br>
+                        <!-- Set project name -->
+                        <div class="form-group">
+                            <label for="projectName" class="col-sm-2 control-label">Project Name</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="projectName" id="projectName" placeholder="Xtreme_Project_1" onclick="close_all();">
+                            </div>
+                        </div>
+                        
+                        <!-- Set Start URL -->
+                        <div class="form-group">
+                            <label for="startURL" class="col-sm-2 control-label">Seed URLs</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="startURL" id="startURL" placeholder="http://example1.com,http://example2.com">
+                            </div>
+
+							
+                        </div>
+			<div class="form-group">
+                            <label for="startURL" class="col-sm-2 control-label">Scope URLs</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="scopeUrls" id="scopeUrls" placeholder="http://example1.com,http://example2.com">
+                            </div>
+
+							
+                        </div>
+{% csrf_token %}
+			<div class="form-group">
+				<label for="login-script" class="col-sm-2 control-label">Login Script</label>
+				<div class="fileinput fileinput-new col-sm-5" data-provides="fileinput">
+				<input type="file" name="login-script" id="login-script" class="btn btn-default btn-file">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="login-script" class="col-sm-2 control-label">Form Values Script</label>
+				<div class="fileinput fileinput-new col-sm-5" data-provides="fileinput">
+				<input type="file" name="form-values-script" id="form-values-script" class="btn btn-default btn-file">
+				</div>
+			</div>
+	
+                        
+                            <label for="toExclude"><font color="">Authentication Information</font></label><br><br>
+                            <div class="form-group">
+                                <label for="loginURL" class="col-sm-2 control-label">Login URL</label>
+                                <div class="col-sm-5">
+                                        <input type="text" name="loginURL" id="loginURL" placeholder="http://example.com/login" class="form-control" onclick="close_all();"></input>
+		                </div>
+                                <br><br>
+                                <label for="logoutURL" class="col-sm-2 control-label">Logout URL</label>
+				<div class="col-sm-5">
+                                        <input type="text" name="logoutURL" id="logoutURL" placeholder="http://example.com/logout" class="form-control" onclick="close_all();"></input>
+				</div>
+                                <br><br>
+			    </div>
+                            <div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Field name for Username</label>
+				<div class="col-sm-5">
+                                        <input id="toAuthUsernameField" name="toAuthUsernameField" class="form-control" width="20" rows="1" spellcheck="false" placeholder="Text_box_user"></input>                        
+                                </div>
+			    </div>
+
+				<div class="form-group">
+				<label for="toExclude" class="col-sm-2 control-label">Username</label>
+				<div class="col-sm-5">
+                                        <input id="username" name="username" class="form-control" width="20" rows="1" spellcheck="false"  onclick="close_all();" placeholder="UserName"></input>                        
+                                </div>
+				</div>
+			    <div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Field name for Password</label>
+                                <div class="col-sm-5">
+					<input id="toAuthPasswordField" name="toAuthPasswordField" class="form-control" width="20" rows="1" spellcheck="false" placeholder="Text_box_password"></input>
+                                </div>								
+			    </div>
+				<div class="form-group">
+				<label for="toExclude" class="col-sm-2 control-label">Password</label>
+				<div class="col-sm-5">
+                                        <input id="password" name="password" class="form-control" width="20" rows="1" spellcheck="false"  onclick="close_all();" placeholder="Password"></input>                        
+                                </div>
+				</div>
+							  
+			    <div class="form-group">
+			<label for="depth" class="col-sm-2 control-label">Depth of the Crawl</label>
+				<div class="col-sm-5">
+	                                <input id="depth" name="depth" type="text" class="form-control" placeholder="2">
+				</div>
+			</div>
+			    <div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Additional Parameters</label>
+                                <div class="col-sm-5">
+				        <input id="authParameters" name="authParameters" class="form-control" width="20" rows="1" spellcheck="false" placeholder="field1:value1,field2:value2"></input>
+                                </div>	
+			    </div>
+			<div class="form-group">
+                                <label for="toExclude" class="col-sm-2 control-label">Redis Server IP</label>
+                                <div class="col-sm-5">
+					<input id="redisIP" name="redisIP" class="form-control" width="20" rows="1" spellcheck="false" placeholder="redisIP"></input>
+                                </div>								
+			    </div>
+			    <div class="form-group">
+                            <label for="roles" class="col-sm-2 control-label">Number of Roles</label>
+                            <div class="col-sm-5">
+                                <input type="number" class="form-control" name="roles" id="roles" placeholder="1">
+                            </div>
+							
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember" value="remember"/> Remember these settings
+                                    </label>
+									<br>
+									
+									<label>
+                                        <input type="checkbox" name="parllel" id="parllel" value="parllel" onclick="open_parllel();"/> Are you running this scan as a parallel scan ?
+                                    </label>
+                                </div>
+							</div>
+						</div>
+						<div class="form-group" id="parllel_box" style="display:none">
+								 <label for="queueName" class="col-sm-2 control-label">Enter a valid virtual storage name</label>
+								<div  class="col-sm-5">
+								
+								<input id="queueName" name="queueName" class="form-control" width="20" rows="1" spellcheck="false" placeholder="Any valid name of 5 digits at least"></input>
+								</div>
+								
+						</div>
+                             
+                       
+                        
+                        <!-- A neat blue button! -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                
+                </div>
+							
+                        </div>
+						
+                        
+                        <!-- Set Query URL -->
+                        <!--<div class="form-group">
+                            <label for="queryURL" class="col-sm-2 control-label">Query URL</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="queryURL" id="queryURL" placeholder="http://example.com/query">
+                            </div>
+                        </div>-->
+                        
+                        <!-- CSRF - Yoyo! -->
+                        {% csrf_token %}
+                                
+                        
+                        
+                        
+                        
+             
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                
+                </div>
+</body>
+</html>

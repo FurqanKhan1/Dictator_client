@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %} Add New Scan {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+                    <h1 class="page-header">The following session variables were detected. Please select the one which identifies role in your application.</h1>
+
+                  <form method="POST" action="/execute_attack">
+                        <!-- A neat blue button! -->
+			{% csrf_token %}
+			<select name="variable">
+			{% for v in list%}
+				<option value="{{v}}">{{v}}</option>
+			{%endfor%}
+			<input type="hidden" id="proj_name" type="text" name="proj_name" value="{{ project}}">
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Checkbox to remember the settings -->
+                        
+                        
+                    </form>
+                
+                </div>
+            </div>
+        </div>
+{% endblock %}

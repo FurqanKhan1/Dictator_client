@@ -1,0 +1,353 @@
+ <html>
+    <head>
+        <!-- Meta Links -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Dictator Framework for Network Penetration testing">
+        <meta name="author" content="Furqan Khan">
+        
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="/static/favicon.ico">
+        
+        <!-- Title -->
+        <title> Dictator Framework |{% block title %}{% endblock %}</title>
+        
+        <!-- Open Sans all the way! -->
+        <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        -->
+        <!-- Bootstrap CSS -->
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet">
+		<link  type="text/css" rel="stylesheet" href="/static/DT/bootstrap-theme.min.css">
+		<!--<link href="/static/js/ts/docs/css/jq.css" type="text/css" rel="stylesheet">
+		<link href="/static/js/ts/themes/blue/style.css" type="text/css" rel="stylesheet">-->
+		<style rel="stylesheet" type="text/css">
+			.loading {
+					display:    block;
+					position:   fixed;
+					z-index:    1000;
+					top:        40%;
+					left:       40%;
+					height:     40%;
+					width:      40%;
+					background-color:white;
+					/*background: rgba( 255, 255, 255,0.9) */
+					border-width:1px;
+					border-style:solid;
+								/*url('/static/img/spin.gif') 
+								30% 30% 
+								no-repeat;*/
+				}
+			.loading_header
+					{
+					background-color:#336699;
+					height:15%;
+					color:white;
+					
+					
+					}
+			.loading_body
+					{
+						height:40%
+						width:40%
+						position:   fixed;
+						z-index:    1000;
+						top:        50%;
+						left:       50%;
+					
+					}
+
+
+				/* When the body has the loading class, we turn
+				   the scrollbar off with overflow:hidden */
+				/*body.loading {
+					overflow: hidden;   
+				}
+
+				/* Anytime the body has the loading class, our
+				   modal element will be visible */
+				/*body.loading .modal {
+					display: block;
+				}
+
+		</style>
+
+
+
+		<link rel="stylesheet" href="/static/DT/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/DT/bootstrap-theme.min.css">
+		<script src="/static/DT/jquery.js"></script>
+		<script src="/static/DT/bootstrap.min.js"></script>
+		<script src="/static/DT/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" href="/static/DT/jquery.dataTables.min.css" />
+        
+        <!-- CSS links for just this page, if any! -->
+        {% block css_links %}{% endblock %}
+        
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+		<style type="text/Css">
+		.tooltip-inner {
+			max-width: 350px;
+			/* If max-width does not work, try using width instead */
+			width: 350px; 
+						}
+		@media (max-width: @screen-xs) {
+			body{font-size: 10px;}
+			}
+
+			@media (max-width: @screen-sm) {
+				body{font-size: 14px;}
+				}
+
+
+			h5{
+				font-size: 1.4em;
+				}
+		</style>
+		<!--<script src="/static/DT/jquery.js"></script>
+		<script src="/static/DT/bootstrap.min.js"></script>
+		<script src="/static/DT/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" href="/static/DT/jquery.dataTables.min.css" />
+		<script>
+		$(document).ready(function()
+		{
+		alert("h:");
+		alert($('#demo_datatables'));
+		 var table1 = $('#demo_datatables').DataTable();
+		alert($("#my_table"));
+		//$("#my_table").tablesorter();
+		var table = $('#my_table').DataTable();
+		alert("hello");
+		});
+		</script>
+		-->
+		
+		
+		<script type="text/javascript">
+		
+		function show_fl()
+		{
+		//alert("h1");
+		document.getElementById("float").style.display="block";
+		}
+		
+	    function getCookie(name) {
+			alert("In get cookie !");
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+				var cookies = document.cookie.split(';');
+				for (var i = 0; i < cookies.length; i++) {
+				    var cookie = jQuery.trim(cookies[i]);
+				    // Does this cookie string begin with the name we want?
+				    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				        break;
+				    }
+				}
+			}
+			return cookieValue;
+		}
+		function create_zip() 
+		{
+		//alert("zip");
+		 var xmlhttp;
+		 var csrfmiddlewaretoken="Q8fZUKGdyX7zMOkiJfisR2ae26xcWaYs"
+		 var test=122;
+		 //var csrftoken=getCookie('csrftoken');
+		 //alert(csrftoken);
+      
+	  //var content="hello test";
+	   //alert("content is "+document.documentElement.outerHTML);
+    if(window.XMLHttpRequest)
+    {
+    xmlhttp =new XMLHttpRequest();
+    }
+    else
+    {
+     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function () {
+	if((xmlhttp.readyState==1 || xmlhttp.readyState==3))
+        {
+        //load_me.style.display="block";
+		//alert("aaa");
+        document.getElementById("center_loading").style.display="block";
+       
+        }
+    
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+		{
+         
+		 
+		 //alert("response is/css content before formating "+xmlhttp.responseText);
+            //alert("a");
+			document.getElementById("center_loading").style.display ="none";
+			var css=xmlhttp.responseText;
+			var zip = new JSZip();
+	       text=document.documentElement.outerHTML;
+		   var ind=text.indexOf("<!--");
+		   //alert(ind);
+		   
+		   var text1=text.substring(0,ind);
+		   //alert(text1);
+		  var text1=text1+'<link type="text/css" href="style.css" rel="stylesheet">';
+		  //alert(text1);
+		  var text2=text.substring(ind);
+		  text3=text1+text2;
+		  css=css.replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#x2F;/g, "/");
+		  //alert("css after updation  "+css);
+		  //var str = "Mr Blue has a blue house and a blue car blue blue blue ";
+          //var res = str.replace(/blue/gi, "red");
+		 // alert(res);
+	        
+	         zip.add("index.html", text3);
+			 zip.add("style.css",css);
+	         content = zip.generate();
+	         location.href="data:application/zip;base64," + content;
+			 
+           
+            
+        }
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 0) 
+		{
+		document.getElementById("center_loading").style.display ="none";
+         }
+    }
+   
+    
+
+   // xmlhttp.open("GET", "/details?proj_name={{ project.project_name }}&update=1", true);
+	xmlhttp.open("GET", "/script?method_id='2'&content='text'&proj_name={{ project.project_name }}&update=1", true);
+	//xmlhttp.setRequestHeader("X-CSRFToken", csrftoken);
+    xmlhttp.send();
+	
+	
+
+}
+		}
+		</script>
+		 
+		
+		
+    </head>
+    
+    <body>
+        
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/" style="color:#ffffff"><span class="glyphicon glyphicon-flash"></span>Dictator</a>
+                </div>
+                
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+						{% if not user.is_authenticated %}
+							<li><a href="/login"><span class="glyphicon glyphicon-paperclip"></span> Login</a></li>
+							</ul>
+							</div></div></div>
+						
+						{% else %}
+							<li>
+                        		
+<ul class="nav navbar-nav">
+                        <li><a href="/"  style="text-decoration:none" id="about_slider" ><span class="glyphicon glyphicon-plus"></span>&nbsp;About</a></li>
+						
+					</ul>
+</li><li>
+                    <ul class="nav navbar-nav">
+                        <li><a href="#float" id="scan_slider" style="text-decoration:none" data-toggle="collapse" ><span class="glyphicon glyphicon-plus"></span>&nbsp;Scan</a>
+							<div id="float" class="collapse">
+							<ul class="list-group">
+							<!---->
+								
+								<li class="list-group-item" {%if page and page == 'new_scan'%} class="active"{% endif %}><a href="/scan" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-plus"></span>New Scan</a></li>
+								<li class="list-group-item" {%if page and page == 'resume_scan'%} class="active"{% endif %}><a href="/scans?paused=True" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-play"></span>Paused Scans</a></li>
+								<li class="list-group-item" {%if page and page == 'resume_scan'%} class="active"{% endif %}><a href="/scans?paused=False" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-play"></span>Current Scans</a></li>
+								
+								
+							<!--</div>-->
+							</ul>
+							</div>
+						</li>
+					</ul>
+</li><li>
+
+		
+							
+				<ul class="nav navbar-nav">
+					 	<li><a href="#float_reports" id="reports_slider" data-toggle="collapse"><span class="glyphicon glyphicon-tasks" ></span>&nbsp;Reports</a>
+					<div id="float_reports" class="collapse"> 
+						<ul class="list-group">
+							<!---->
+								
+								<li class="list-group-item"><a href="/Upload" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-plus"></span>Upload Reports</a></li>
+								<li class="list-group-item"><a href="/Merger" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-play"></span>Merge Reports</a></li>
+								<li class="list-group-item"><a href="/Map" style="text-decoration:none;font-size:14px;"><span class="glyphicon glyphicon-play"></span>Map Cve-Exploits</a></li>
+								
+								
+							<!--</div>-->
+							</ul>					
+						</div>
+						</li>
+					</ul>
+			</li><li>
+
+							                        <ul class="nav navbar-nav"><li><a href="/faqs"><span class="glyphicon glyphicon-question-sign"></span> FAQs</a></li></ul>
+</li><li>
+					 <ul class="nav navbar-nav navbar-right"> <li><br><div class="dropdown active">
+  <button class="btn btn-secondary dropdown-toggle nav navbar-inverse" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+    <span class="glyphicon glyphicon-cog" style="color:white">Settings</span>
+  </button>
+  <div class="dropdown-menu nav navbar-inverse col-sm-12" aria-labelledby="dropdownMenuButton">
+	<br>
+    <ul>
+    
+    <li><a href="/logout"><span class="glyphicon glyphicon-paperclip"></span> Logout</a></li>
+	<li class="dropdown-item"><a href="/password"><span class="glyphicon glyphicon-paperclip"></span>Change Password</a></li>
+	<li class="dropdown-item"><a href="#">My Profile</a></li>
+	</ul>
+	<br>
+  </div>
+</div></li></ul>
+  </li></ul>                  
+                    
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid">
+            <div class="row">
+		
+        		 
+				
+				{% endif %}
+                <div>
+               	{% block body_content %}{% endblock %}
+				</div>
+				
+        
+        <!-- Bootstrap core JavaScript
+
+		<script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/docs.min.js"></script>
+		 -->
+        <!-- Placed at the end of the document so the pages load faster -->
+                        
+        {% block scripts %}{% endblock %}
+		{% block scripts_blind %}{% endblock %}
+    <div class="modal"><!-- Place at bottom of page --></div>
+	</div>
+    </body>
+</html>

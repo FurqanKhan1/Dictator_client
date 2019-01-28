@@ -1,0 +1,123 @@
+ <div class="form-group">
+								<div class="fileinput fileinput-new" data-provides="fileinput">
+									<label for="login-script" class="col-sm-3 control-label"><small>Login Script</small></label>
+									 <div class="col-sm-5">
+									<input type="file" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Login Script Example</b></font><br>Login Script file is the HTML file which would have been created with the help of selinium tool and would contain the Login Credentials.<br>
+									Please reffer to user mannual for further details"
+									name="login-script" id="login-script" class="btn btn-default btn-file">
+									<div class="fileinput fileinput-new" data-provides="fileinput">
+										<!--<input class="fileinput-new" type="text">-->
+									</div>
+									 </div>
+								</div>
+							</div>
+
+                            <div class="form-group">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <label for="form-values-script" class="col-sm-3 control-label"><small>Form Values File</small></label>
+									<div class="col-sm-5">
+                                    <input type="file" data-placement="auto left" data-toggle="tooltip" title="<font color=white size=3px><b>Form Values Script Example</b></font><br>Form Values Script file is the HTML file which would have been created with the help of selinium tool and would contain the valid values for various input forms.<br>
+									Please reffer to user mannual for further details" name="form-values-script" id="form-values-script" class="btn btn-default btn-file">
+                                
+                                <div class="file-path-wrapper">
+                                    <!--<input class="fileinput-new" type="text">-->
+                                </div>
+									</div>
+									</div>
+                            </div>
+
+
+
+
+	                       
+
+	                            <div class="form-group">
+								<label for="login-url" class="col-sm-3 control-label"><small>Login Url</small></label>
+								<div class="col-sm-6">
+	                                <input id="login-url" title="<font color=white size=3px><b>Login URL</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+							    <br>
+								<ul>
+								<li>Specify the URL that contains the login form of the web application to be tested .<br></li>
+								<li>If your app/website is running ,you can go to the website and check the URL in the address bar</li>
+								</ul>
+							    
+							   </font>" data-placement="auto left" data-toggle="tooltip" name="login-url" type="text" class="form-control">
+								</div>
+	                                
+	                            </div>
+
+	                            <div class="form-group">
+								
+								<label for="base-address" class="col-sm-3 control-label"><small>Base-Address</small></label>
+								<div class="col-sm-6">
+	                                <input id="base-address" title="<font color=white size=3px><b>Base Address</b></font></div>
+							    <div style=width:90%;max-width:90%><br><font color=white style=font-family: Open Sans,Helvetica Neue,Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.42857143;>
+							    <br>
+								<ul>
+								<li>Specify the URL that contains the Base address of your web application .<br></li>
+								<li>If your app/website is running ,you can go to the website and check the URL in the address bar</li>
+								</ul>
+							    
+							   </font>" data-placement="auto left" data-toggle="tooltip" name="base-address" type="text" class="form-control">
+									</div>
+	                                
+	                            </div>
+
+	                            <div class="form-group">
+								<label for="start-url" class="col-sm-3 control-label"><small>Start Url</small></label>
+								<div class="col-sm-6">
+	                                <input id="start-url" data-placement="auto left"  data-toggle="tooltip" title="<font color=white size=3px><b>Start Url Example</b></font><br>Kindly Specify :<br>The protocol (http,https ,etc)<br> The domain name (localhost or etc) <br> The  app name (if present)<br> The index page/start page<br>
+							<br>
+							For eg : 
+							<ul>
+							<li>
+							
+							Example 1 :http://localhost:8000/MYapp/index.jsp
+							</li>
+							<li>
+							Example 2 (Without app name):  http://www.mysite.com/index.php
+							
+							</li></ul>
+							<br>
+							Note :Specify start Url only when there would be no Login URL in the application" name="start-url" type="text" class="form-control">
+								</div>
+	                                
+	                            </div>
+	                        
+
+
+	                        
+    	                        <div class="form-group">
+								<label for="black-list-urls" class="col-sm-3 control-label"><small>Black List Urls (Give a List Comma Separated)</small></label>
+								<div class="col-sm-6">
+	                                <input id="black-list-urls" data-placement="auto left" data-toggle="tooltip" title="Specify Urls that u do not wish to be crawled" name="black-list-urls" type="text" class="form-control">
+									</div>
+	                                
+	                            </div>
+	                            <div class="form-group">
+								<label for="scope-urls" class="col-sm-3 control-label"><small>Scope-Urls (Give a List comma separated)</small></label>
+								<div class="col-sm-6">
+                                	<input id="scope-urls" data-placement="auto left" data-toggle="tooltip" title="If your application has got multiple domains,specify all the domains that you wish to fall under scope of crawler" name="scope-urls" type="text" class="form-control">
+									</div>
+                                	
+                            	</div>
+
+                            	<div class="form-group">
+								<label for="wait-time" class="col-sm-3 control-label"><small>Global Wait Time</small></label>
+								<div class="col-sm-6">
+                          	      <input id="wait-time" name="wait-time" data-placement="auto left" data-toggle="tooltip" title="Specify maximum wait time for scan" type="text" class="form-control">
+								  </div>
+                            	    
+                            	</div>
+
+	                        
+
+                           
+                                <div class="form-group">
+								 <label for="depth" class="col-sm-3 control-label"><small>Depth of the Crawl</small></label>
+								 <div class="col-sm-6">
+	                                <input id="depth" name="depth" type="text" data-placement="auto left" data-toggle="tooltip" title="Specify maximum depth of the crawl .(i.e.),the level till which crawler must go in at each individual workflow" class="form-control">
+									</div>
+	                               
+	                            </div>

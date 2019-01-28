@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+  stroke-width: 4px;
+}
+
+.node text {
+  fill: "#abc";
+  pointer-events: none;
+  font: 10px sans-serif;
+}
+
+
+
+</style>
+<body>
+<script src="/static/d3.v3.min.js"></script>
+<script>
+
+var width = 1260,
+    height = 768
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+  svg.append("svg:defs").selectAll("marker")
+    .data(["end"])      // Different link/path types can be defined here
+  .enter().append("svg:marker")    // This section adds in the arrows
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -1.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+  
+
+var force = d3.layout.force()
+    .gravity(.05)
+    .distance(300)
+    .charge(-2000)
+    .size([width, height]);
+
+d3.json("static/jsonDataFile.txt", function(error, json) {
+  if (error) throw error;
+
+  force
+      .nodes(json.nodes)
+      .links(json.links)
+      .start();
+
+
+ 
+
+  var link = svg.selectAll(".link")
+    .data(json.links)
+    .enter().append("line")
+    .attr("class", "link")
+    .style("stroke-width", function(d) { return 3; })
+    .attr("marker-end", "url(#end)");
+
+
+  var node = svg.selectAll(".node")
+      .data(json.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .call(force.drag);
+  
+node.append("image")
+      .attr("xlink:href", function(d, i){
+        //console.log(d, i);
+        return "static/screenshots/"+parseInt(i)+".png"
+      })
+      .attr("x", -8)
+      .attr("y", -8)
+      .attr("width", 200)
+      .attr("height", 200)
+      .on('click', function(d, i){
+        console.log(i);
+        //window.open ("screenshots/state"+parseInt(i+1)+"_small.jpg");
+      });
+    /*
+ var node = svg.selectAll(".node")
+      .data(json.nodes)
+    .enter().append("circle")
+      .attr("class", "node")
+      .attr("r", 15)
+      .style("fill", function(d) { return color("#000"); })
+      .call(force.drag);
+*/
+
+
+node.append("text")
+    .attr("x", 12)
+    .attr("dy", ".35em")
+    .text(function(d) { 
+      console.log(d.name)
+      return d.name; 
+    })
+    .attr("fill", "black");
+
+
+ 
+
+// add the links and the arrows
+
+
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  });
+
+   /* 
+    function tick() {
+  link.attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+}; 
+    force.on("tick", tick());
+*/
+});
+
+</script>
+</body>

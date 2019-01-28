@@ -1,0 +1,735 @@
+{% extends "base.html" %}
+
+
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+
+<div class="col-sm-12 col-md-12 main" id="dashboard_area">
+			<div id="loading_div" style="display:none" class="loading">
+								
+								<div><div class="loading_header text-center">Loading</div><div><br><img src="/static/img/spin.gif" class="img-responsive center-block"></img></div></div>
+				</div>
+				
+
+                    <!-- Heading! -->
+				<div id="response_div" class="alert alert-info" style="display:none"><button type="button" class="close" onclick="hide_me();" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span>&nbsp; <div id="response_span"></div></div>
+								
+				<div id="status_div" name="status_div" style="display:none">
+				<input type="hidden" id="continue" name ="continue" value="{{ continue }}"></input>
+													<input type="hidden" id="percent_current" name ="percent_current" value="{{ percentage }}"></input>
+													<input type="hidden" id="error" name ="error" value={{ error }}></input>
+													
+													<input type="hidden" id="change_content" name ="change_content" value="{{ change_contentt }}"></input>
+												
+													<input type="hidden" id="record_list" name ="record_list" value="{{ record_list }}"></input>
+													<input type="hidden" id="source" name ="source" value="{{ source }}"></input>
+													<span id="status">
+															 <b>{{ project_status }}</b>
+													</span>
+
+				</div>
+				<div class="alert alert-danger" id="error_div" style="display:none"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> <span id="error_message"></span></div>
+
+				<div id="pause_scan" class="alert">
+					{% if project_status != 'complete' %}
+										<div class="form-group">
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static"><a class="btn btn-danger btn-lg" id="pause">Pause Scan</a></p>
+                                        </div>
+										       <input type="hidden"  id="pause_val" value="">                                 
+                                    	</div>
+					<br>
+					
+					{% endif %}
+				</div>
+				<div id="resume_scan" style="display:none">
+					<div class="col-sm-10">
+					<form method="post" action="/resume_scan/"><button class="btn btn-success btn-lg">Resume Scan</button><input type="hidden" id="project_id" name="project_id" value="{{ project_id }}"></input><input type="hidden" id="project_name" name="project_name" value="{{ project_name }}"></input> {% csrf_token %}</form>
+					</div>
+					</div>
+				<div id="updated_content_parent"></div>
+                   
+
+				<div id="main_container">
+			
+					
+								
+				
+                    <div id="details_area">
+						{% if error == 'True' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>
+						{% else %}
+						<br>
+                    <h4>Details - {{ project_id }}</h4>
+				
+    
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    Project Configuration Obtained
+                                </h3>
+                            </div>
+                          
+                            <div class="panel-body" id="percentage_parent">
+                                
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">Project Name</label>
+                                        <div class="col-sm-10">
+                                            <p class="form-control-static">{{ project_id }}</p>
+                                        </div>
+                                    </div>
+									<br>
+									<div class="progress progress-striped active">
+								            <div class="progress-bar progress-bar-success" id="percent" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percentage }}%;">
+								                <strong>{{ percentage }}% Completed</strong>
+								            </div>
+									</div>
+		
+											<br>
+											<div>
+											<table class="table table-striped table-hover" style="font-size:100%">
+						                        <colgroup>
+						                            <col class="col-xs-1">
+						                   
+						                        </colgroup>
+						                        <thead>
+						                            <tr>
+						                                <th>
+						                                    Current Status
+						                                </th>
+														<th>
+															
+														</th>
+														<th></th>
+						                            </tr>
+						                        </thead>
+						                        
+						                        <tr>
+													<td><b>{{ project_status }}</b></td>
+						                            <td>
+													</td>
+													<td>
+													
+													</td>
+						   					    </tr>
+						                    </table>
+
+											</div>
+                                
+                            </div>
+                        </div>
+                            
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Configuration Details</h3>
+								
+                            </div>
+							<br>               									
+							<div class="panel-body">
+								<br>
+								<div class="table-responsive">
+                                <table id="my_table" class="table table-striped table-hover" style="font-size:100%">
+                                    <thead class="thead-inverse" style="background-color:black;color:yellow">
+                                        <tr>
+											<th class="col-md-2">
+                                               Commands Associated
+                                            </th>
+                                           
+											<th class="col-md-2">
+                                                <font color="green"><span class="glyphicon  glyphicon-signal"></span>&nbsp;&nbsp; </font>Host
+                                            </th>
+											<th class="col-md-2">
+                                                <font color="orange"><span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;</font>Port
+                                            </th>
+											<th class="col-md-2">
+                                                <font color="cornflowerblue"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;</font>Service
+                                            </th>
+											<th class="col-md-1">
+                                                <font color="" style="font-size:0.8em"><span class="glyphicon glyphicon-tasks"></span>&nbsp;Type
+                                            </th>
+										
+											<th class="col-md-1">
+                                                State -- Version
+                                            </th>
+											
+											<th class="col-md-1">
+                                               Action
+                                            </th>
+											<th class="col-md-1">
+												Status
+											</th>
+											
+                                        </tr>
+                                    </thead>
+
+									<tbody>
+                                    {% for data in content %}
+									
+                                    <tr style="background-color:white">
+										<td class="col-md-2" style="background-color:white"> 
+										<b><a href="#command_{{data.id}}" id="scan_slider" style="text-decoration:none"
+										 data-toggle="collapse" >Commands</a></b>
+
+											<div id="command_{{data.id}}" class="collapse" style="font-size:1em">
+												<table class="table">
+												{% for c in data.Commands %}
+												 <tr><td style="background-color:#dff0d8">Include</td><td>{{ c.include }}</td></tr>
+												<tr><td style="background-color:#dff0d8">ID</td><td>{{ c.id }}</td></tr>
+												<tr><td style="background-color:#dff0d8">Arguments</td><td>
+														<div> {{c.args }}
+														
+														</div>
+																	</td></tr>
+												<tr><td></td><td></td></tr>
+												{% endfor %}
+												</table>
+												
+											</div>
+										</td>
+									
+                                        <td class="col-md-2"><font color="green" size="1.2em"><span class="glyphicon  glyphicon-signal"></span>&nbsp; </font> {{ data.host }}</span><br><input class="form-control" id="host_{{data.id}}" type="text" value="{{ data.host }}"
+  style="display:none"></input></td>
+										<td class="col-md-2"><font color="orange"><span class="glyphicon glyphicon-fire"></span>&nbsp;</font> {{ data.port }}</span><br><input class="form-control" type="text" value="{{ data.port }}" id="port_{{data.id}}" style="display:none"></input></td>
+										<td class="col-md-2"><font color="cornflowerblue"><span class="glyphicon glyphicon-tasks"></span>&nbsp;</font> {{ data.service }}</span><br><input class="form-control" type="text" value="{{ data.service }}" id="service_{{data.id}}" style="display:none"></input></td>
+										<td class="col-md-1"><font color="" style="font-size:0.8em"><span class="glyphicon glyphicon-tasks"></span>&nbsp; {{ data.service_type }}</span></td>
+										<td class="col-md-1"><span id="span4"> {{ data.state }}<br> {{ data.version }}</span></td>
+										
+										<td class="col-md-1">
+										{% if data.project_status == 'init' %}
+										<b><a href="#/" data-toggle="tooltip" title="Reconfigure_Service" data-placement="left" onclick="toggle_r({{data.id}})">Reconfigure</a></b>
+
+										{% endif %}
+										</td>
+										<td class="col-md-1">
+										{% if data.project_status == 'processing' and data.service_type == 'existing' and data.test_case == 'true' %}
+											<a href="#" data-target="#show_results_{{ data.id }}" data-toggle="modal"	
+ 											class="btn btn-info btn-sm">
+          										<span class="glyphicon glyphicon-ok"></span>
+        									</a>
+ 
+										{% elif data.project_status == 'processing' and data.service_type == 'existing' %}
+											<img src="/static/img/rolling.gif"  class="img-responsive" style="height:28px"></img>
+										{% elif data.project_status == 'complete' %}
+											<a href="#/" data-target="#show_results_{{ data.id }}" data-toggle="modal" class="btn btn-success btn-sm">
+          										<span class="glyphicon glyphicon-ok"></span>
+        									</a>
+										{% elif data.project_status == 'init'  and data.service_type == 'existing'  %}
+											<input type="checkbox" id="scan_id_{{ data.id }}" onclick="load_scan_ids({{ data.id }});">
+											<span>Scan</span>
+										{% endif %}
+										</td>
+																			
+									</tr>
+									
+	               					{% endfor %}
+									</tbody>
+                                </table>
+								</div>
+							<br>
+							<br>
+							<div class="row table-responsive" >							
+							 <div class="col-sm-10">
+								<table class="table table-inverse" style="font-size:100%">
+								<tr>
+								<th class="col-md-2">Host</th>
+								<th class="col-md-2">Port</th>
+								<th class="col-md-2">Service</th>
+								<th class="col-md-2">Action</th>
+								</tr>
+								<tr>
+								<td class="col-md-2">
+								<input type="text" id="add_host" name="add_host" placeholder="192.168.179.132"></input>
+								</td>
+								<td class="col-md-2">
+								<input type="text" id="add_port" name="add_port" placeholder="22"></input>							</td>
+								<td class="col-md-2">
+								<input type="text" id="add_service" name="add_service" placeholder="ssh"></input>								
+								</td>
+                                <td class="col-md-2"><button id="add_case" onclick="add({{project_id}});" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-play-circle"></span>Add Test Case</button>
+								</td>
+								</tr>
+								</table>
+                            </div>
+                        	</div>
+							
+							<div class="form-group" style="visibility:hidden">
+							<div class="col-sm-10">
+                                <button onclick="Update({{project_id}});"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span>Update</button>
+                            </div>
+							</div>
+							<br>
+							<br>
+							
+							<form class="form-horizontal" role="form" action="/vul_scan_conc/" method="post">
+							{% csrf_token %}							
+							<div class="form-group" style="visibility:hidden">
+							
+						
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Start Scanning</button>
+								<input type="hidden" id="project_id" name="project_id" value={{project_id}}>
+								</input>
+								
+                            </div>
+                        	</div>
+							</form>
+                        
+                            </div>
+							
+                           
+                        </div>
+						   {% endif %} 
+                    </div>
+				</div>
+					
+					<script>
+							json_obj=[];
+							scan_id_list=[];
+							function load_scan_ids(entry_id)
+							{
+								if($('#scan_id_'+entry_id).prop("checked")==true)
+								{
+									//alert("its checked");
+									Load_Unload_scan_ids(entry_id,0);
+								}
+								else
+								{
+									Load_Unload_scan_ids(entry_id,1);
+								}
+							}
+							function Load_Unload_scan_ids(id,delete_)
+								{
+									if (delete_==0)
+									{
+										//alert("Pushing entry :"+id);
+										scan_id_list.push(id);
+										
+									}
+									else
+									{
+										//alert("Popping element");
+										for (var i=0;i < scan_id_list.length;i++)
+									{
+										e=scan_id_list[i];
+										if (e==id)
+										{
+											//alert("About to remove element with id :" +id);
+											scan_id_list.splice(i,1);
+										}
+										
+
+									}
+									}	
+								}
+
+							function toggle_r(id)
+							{
+								$('#host_'+id).toggle();	
+								$('#port_'+id).toggle();
+								$('#service_'+id).toggle();
+								$('#reconfig_service_'+id).toggle();
+								var is_visible=$('#host_'+id).is(":visible");
+								if (is_visible==true)
+								{
+									Load_Entries(id,0);
+								}
+								else
+								{
+									Load_Entries(id,1);
+								}
+								
+								
+							}
+							function Update(project_id)
+							{
+								if (json_obj.length > 0)
+								{
+									var json_obj_list=[];
+									//alert("Inside Update function :");
+									for (var i=0;i<json_obj.length;i++)
+										{
+											e=json_obj[i];
+											entry={};
+											entry_key=e;
+											entry_envolope={};
+											entry["host"]=$('#host_'+e).val();
+										
+											entry["port"]=$('#port_'+e).val();
+											entry["service"]=$('#service_'+e).val();
+											entry["id"]=e;
+											entry["concurrent"]="0";
+											entry["reconfig_service"]=true;
+											entry["reconfig_exploit"]=false;
+											entry["project_id"]=project_id;
+											var commands=[];
+											command_entries={};
+											command_entries["include"]=true;
+											command_entries["id"]=entry["service"];	
+											command_entries["args"]=["arg1","arg2"];
+											commands.push(command_entries);
+											entry["Commands"]=commands;
+											json_obj_list.push(entry);
+
+										}
+									$body = $("#loading_div");
+									var converted=JSON.stringify(json_obj_list);
+									csrf_val=getCookie('csrftoken');
+									$body.show();
+									json_obj=[];
+									$.post("/config_conc/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":project_id,"mode":"concurrent"},
+								    function(data){
+										$('#main_container').html(data);
+										//alert('#main_container').html();
+										init_search_table();
+										
+										$body.hide();
+										//$('#my_table_1').DataTable();
+										
+													}
+										);
+									}
+									else 
+										{
+											alert("You have not updated any configuration");
+											//Show some proper kool box here instead of alert
+										}
+									}
+
+							function getCookie(name) {
+							//alert("In get cookie !");
+							var cookieValue = null;
+							if (document.cookie && document.cookie != '') {
+								var cookies = document.cookie.split(';');
+								for (var i = 0; i < cookies.length; i++) {
+									var cookie = jQuery.trim(cookies[i]);
+									// Does this cookie string begin with the name we want?
+									if (cookie.substring(0, name.length + 1) == (name + '=')) {
+										cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+										break;
+									}
+								}
+							}
+							return cookieValue;
+						}
+							function Load_Entries(id,delete_)
+								{
+									if (delete_==0)
+									{
+										//alert("Pushing entry :"+id);
+										json_obj.push(id);
+									}
+									else
+									{
+										//alert("Popping element");
+										for (var i=0;i<json_obj.length;i++)
+									{
+										e=json_obj[i];
+										if (e==id)
+										{
+											//alert("About to remove element with id :" +id);
+											json_obj.splice(i,1);
+										}
+										
+
+									}
+									}	
+								}
+
+								function Load_Entries_data(id)
+								{
+								if ($('#reconfig_service_'+id).prop("checked")==true)
+								{
+									//"checked");
+									entry={};
+									entry_key=id;
+									entry_envolope={};
+									entry["host"]=$('#host_'+id).val();
+									entry["port"]=$('#port_'+id).val();
+									entry["service"]=$('#service_'+id).val();
+									entry["id"]=id;
+									entry_envolope[entry_key]=entry;
+									json_obj.push(entry_envolope);
+									
+								}
+								else
+								{
+									//alert("unchecked and Removing");
+									//e=json_obj[0];
+									for (var i=0;i<json_obj.length;i++)
+									{
+										e=json_obj[i];
+										for (var key in e)
+										{
+											if (key==id)
+											{
+											 	//alert("About to remove element with id :" +id);
+												json_obj.splice(i,1);
+											}
+											
+										if (Object.hasOwnProperty(key))
+										{
+													//alert("val is :"+e[key]);
+										}
+										}
+									}
+									//alert("Now left Items are :");
+									for (var i=0;i<json_obj.length;i++)
+									{
+										e=json_obj[i];
+										for (var key in e)
+										{
+											alert("Key left is :"+key);
+											alert("value left is :"+e[key]);
+
+										}
+									}
+								}
+														
+								
+							}
+							</script>
+					<script>
+							//json_obj=[];
+							//json_obj_list=[];
+							function init_search_table()
+							{
+							//("here 1");
+							var t=$('#my_table');
+							//alert(t);
+							var table = $('#my_table').DataTable(
+											{
+												"iDisplayLength":100,
+												"alengthMenu":[[10,25,50,75,100,150,200,-1],[10,25,50,75,100,150,200,"All"]]
+											}
+																);
+				
+							//alert(table);
+						 	
+							}
+
+							$(document).ready( function () {
+								init_search_table();
+							  	$('[data-toggle="tooltip"]').tooltip();
+
+					$('#pause').click(function()
+					{
+						$body = $("#loading_div");
+						project_id={{ project_id }}
+						csrf_val=getCookie('csrftoken');
+						$body.show();
+						json_obj=[];
+						$('#pause_val').val('True');
+						$.post("/pause/",{"csrfmiddlewaretoken":csrf_val,"project_id":project_id },
+							  function(data){
+												if (data.error=="True")
+												{
+													$('#response_span').text("Error is :"+data.error_msg);
+													$('#response_div').show();
+												}
+												else
+												{
+													$('#response_div').show();
+													$('#response_span').text("Scan paused successfully");
+													$('#pause_scan').hide();
+													$('#resume_scan').show();
+												}
+												$('#spin_image').hide();
+												$body.hide();
+												$('#status').text("Paused");
+												$('#my_table').html('');
+												//init_search_table();
+												}
+												);
+					});
+					}); 
+							function hide_me()
+							{
+								$('#response_div').hide();
+							}		
+
+						
+			
+							</script>
+			<script>
+			function Vul_scan(project_id)
+			{
+				if (scan_id_list.length >0)
+				{
+				var converted=JSON.stringify(scan_id_list);
+				var scan_ids=scan_id_list;
+				//("converted data is :"+converted)
+				csrf_val=getCookie('csrftoken');
+				scan_id_list=[];
+				$body=$('#loading_div');
+				$body.show();
+				$.post("/vul_scan_conc/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":"{{ project_id }}"},
+				function(data){
+					if (data.error=="True")
+												{
+													$('#response_span').text(data.error_msg);
+													$('#response_div').show();
+												}
+					else
+												{
+													$('#response_div').show();
+													$('#response_span').text("Scan started successfully");
+													for (var i=0;i<scan_ids.length;i++)
+													{
+														$('#reconfig_'+scan_ids[i]).html('');
+														$('#action_'+scan_ids[i]).html("<img src=/static/img/rolling.gif  class=img-responsive style=height:28px></img>");
+													}
+													
+												}
+					$body.hide();
+
+							}
+						);
+				}
+				else
+					{
+					alert("U have not selected any Record to launch scanning against");
+					}
+				//alert("Starting vul scan for project id :"+(project_id));
+			}
+
+			function add(project_id)
+							{
+								//alert("hello :"+project_id)
+								var json_obj_list=[];
+								if (($('#add_host').val().trim() !="") && ($('#add_port').val().trim() !="") && ($('#add_service').val().trim() !=""))
+								{
+								entry={}
+								entry_envolope={};
+								entry["host"]=$('#add_host').val();
+							
+								entry["port"]=$('#add_port').val();
+								entry["service"]=$('#add_service').val();
+								entry["id"]=0;
+								entry["concurrent"]="0";
+								entry["project_id"]=project_id;
+								var commands=[];
+								command_entries={};
+								commands.push(command_entries);
+								entry["Commands"]=commands;
+								json_obj_list.push(entry);
+								
+								$body = $("#loading_div");
+									var converted=JSON.stringify(json_obj_list);
+									csrf_val=getCookie('csrftoken');
+									$body.show();
+									
+									$.post("/add/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":project_id,"mode":"concurrent"},
+								    function(data){
+										//alert(data);
+										$('#main_container').html(data);
+										init_search_table();
+										$body.hide();
+													}
+										);
+									}
+									else 
+										{
+											alert("You have not added any configuration");
+											//Show some proper kool box here instead of alert
+										}
+									
+
+							}
+
+			function update_details() {
+				//alert("!");
+				//alert($('#status_div').html());
+                $.get("/details_scan_conc?proj_id={{ project_id }}",
+                    function(data){
+						//$('#status_div').html(data);
+						var temp=$(data);
+						//alert("2");
+						//alert(data);
+						if (($(data).find('#change_content').val()=="True") && ($('#pause_val').val().trim()!="True"))
+						{
+						val=$(data).find('#record_list').val();
+						$('#status_div').html('');
+						var list=jQuery.parseJSON(val);
+						//alert("list is :"+list);
+						for (var i=0;i<list.length ;i++)
+						{
+						var search_element="show_results_"+list[i];
+						//alert($('#show_results_'+list[i]));
+						if ($('#show_results_'+list[i]).length)
+						{
+							//alert("found and removed");
+							if ($(temp).find('#show_results_'+list[i]).length)
+							{
+							$('#show_results_'+list[i]).html($(data).find('#show_results_'+list[i]).html());//remove();
+							//alert("Before :"+$(temp).find('#show_results_'+list[i]).html());
+							//$(data).find('#show_results_'+list[i]).remove();
+							temp.find('#show_results_'+list[i]).remove();
+							//alert("After : "+$(temp).find('#show_results_'+list[i]).html());
+							}
+							
+							
+							
+						}
+						}
+                        
+						//$('#status_div').html('');
+                        $('#details_area').html(temp);
+						var source=$('#source').val().trim();
+						if (source=="final")
+						{
+						$('#updated_content_parent').append($('#updated_content_child').html());
+						$('#updated_content_child').html('');
+						}
+						init_search_table();
+						val=$('#record_list').val();
+						$body = $("#loading_div");
+									var obj=jQuery.parseJSON(val)
+									var converted=JSON.stringify(obj);
+									csrf_val=getCookie('csrftoken');
+									json_obj=[];
+									$.post("/details_scan_conc/",{"csrfmiddlewaretoken":csrf_val,"data":converted,"project_id":"{{ project_id }}","source":source},
+								    function(data){
+											if ((data.error=="True") )
+												{
+												 $("#error_div").attr('display','block');
+												 $("#error_message").html(data.error_msg);
+												}
+													}
+										);
+									
+						
+						}
+						else
+						{
+							//alert("here");
+							$('#percentage_parent').html($(data).find('#percentage_child').html());
+							//alert("22");
+							$('#status_div').html('');
+						}
+								
+						}
+                );
+			
+                if (($('#status').text().trim()=="In Progress") && ($('#percent_current').val().trim()!="100") && ($('#pause_val').val().trim()!='True'))
+					{
+						//alert("About to poll");
+                    setTimeout(update_details, 10000);
+					}
+				if ($('#percent_current').val().trim()=="100")	
+				{
+					$('#pause_scan').hide();
+				}
+            }
+            
+            if (($('#status').text().trim()=="In Progress"))
+				update_details();
+			//alert("Reached here and function not called");
+        </script>
+					
+					
+                </div>
+				
+           
+{% endblock %}
+

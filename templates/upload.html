@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %} Add New Scan {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+                    <!-- Heading! -->
+                    
+					{% if success == 'False' %}<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>{% endif %}
+			{% if success == 'True' %}<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Success </strong> <br>{{ success_msg }}</div>{% endif %}
+			<br>
+			<div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                   Upload XML Reports
+                                </h3>
+                            </div>
+                          
+                  <div class="panel-body">
+                        
+					<div class="form-group">
+                                <label for="choice" class="col-sm-4 control-label">Upload Choice</label>
+								        <select name="choice" id="choice" onchange="show_div(this.value);" class="form-control">
+										<option value ="choice">Upload Choice</option>
+										<option value ="nmap">Nmap XML</option>
+										<option value ="nessus">Nessus XML</option>
+										<option value ="qualys">Qualys XML</option>
+										</select>
+								
+                                
+			    	</div>
+				</div>
+			</div>
+					<br>
+					<br>
+					<div id="nmap_div" style="display:none">
+                    <form  class="form-horizontal" role="form" method="POST" action="/Upload/" enctype="multipart/form-data">
+						<div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                     <label><font color="">Upload Nmap XML</font></label>
+                                </h3>
+                            </div>
+
+                      
+                        <!-- Set project name -->
+					<div class="panel-body">
+                        <div class="form-group">
+                            <label for="project" class="col-sm-2 control-label">Project Name</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="project" id="project" placeholder="Project_1">
+								
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- CSRF - Yoyo! -->
+                        {% csrf_token %}
+						<div class="form-group"">
+									<label for="file" class="col-sm-2 control-label">XML File</label>
+									<div class="col-sm-6">
+		                           
+		                                    <input type="file" id="file" name="file" class="btn-xs btn-default btn-file" >
+		                            
+									
+									</div>
+						</div>
+					
+						<input type="hidden" name="source" id="source" value="nmap">
+						<div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Upload</button>
+                            </div>
+                        </div>
+                    </div>  
+                    </form>
+						</div> 
+					</div>
+					
+					<div id="qualys_xml_div" style="display:none">
+						<div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                     <label><font color="">Upload Qualys XML</font></label>
+                                </h3>
+                            </div>
+							<div class="panel-body">
+							<form  class="form-horizontal" role="form" method="POST" action="/Upload/" enctype="multipart/form-data">    
+		                        
+		                         <div class="form-group">
+		                            <label for="project" class="col-sm-2 control-label">Project Name</label>
+									<div class="col-sm-6">
+		                                    <select name="project" id="project" class="form-control">
+											{% for project in projects %}
+											 {% if project.project_status == 'complete' and project.project_status_exploits == 'complete' %}
+												<option value ={{ project.id }}>{{ project.name }}</option>
+											{% endif %}
+											{% endfor %}
+											</select>
+								
+		                            </div>
+								</div>
+								<div class="form-group"">
+									<label for="file" class="col-sm-2 control-label">XML File</label>
+									<div class="col-sm-6">
+		                           
+		                                    <input type="file" id="file" name="file" class="btn-xs btn-default btn-file" >
+		                            
+									
+									</div>
+								</div>
+								
+								<input type="hidden" name="source" id="source" value="qualys">
+								 {% csrf_token %}
+		                    <div class="form-group">
+		                        <div class="col-sm-offset-2 col-sm-10">
+		                            <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Upload</button>
+		                        </div>
+		                    </div>
+							</div>
+		                   </form>
+						</div>
+                	</div>
+					
+					<div id="nessus_xml_div" style="display:none">
+						<div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                     <label><font color="">Upload Nessus XML</font></label>
+                                </h3>
+                            </div>
+							<div class="panel-body">
+							<form  class="form-horizontal" role="form" method="POST" action="/Upload/" enctype="multipart/form-data">    
+		                        
+		                         <div class="form-group">
+		                            <label for="project" class="col-sm-2 control-label">Project Name</label>
+									<div class="col-sm-6">
+		                                    <select name="project" id="project" class="form-control">
+											{% for project in projects %}
+											 {% if project.project_status == 'complete' and project.project_status_exploits == 'complete' %}
+												<option value ={{ project.id }}>{{ project.name }}</option>
+											{% endif %}
+											{% endfor %}
+											</select>
+								
+		                            </div>
+								</div>
+								<div class="form-group"">
+									<label for="file" class="col-sm-2 control-label">XML File</label>
+									<div class="col-sm-6">
+		                           
+		                                    <input type="file" id="file" name="file" class="btn-xs btn-default btn-file" >
+		                            
+									
+									</div>
+								</div>
+								
+								<input type="hidden" name="source" id="source" value="nessus">
+								 {% csrf_token %}
+		                    <div class="form-group">
+		                        <div class="col-sm-offset-2 col-sm-10">
+		                            <button type="submit"  class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> Upload</button>
+		                        </div>
+		                    </div>
+							</div>
+		                   </form>
+						</div>
+                	</div>
+                </div>
+
+                </div>
+				
+            
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+
+function show_div(source)
+{
+  if (source=="nmap")
+	{
+			
+			$('#nessus_xml_div').hide();
+			$('#qualys_xml_div').hide();
+			$('#nmap_div').slideToggle();
+	}
+else if (source=="nessus")
+	{
+			
+			$('#nmap_div').hide();
+			$('#qualys_xml_div').hide();
+			$('#nessus_xml_div').slideToggle();
+	}
+	
+else if (source=="qualys")
+	{
+			
+			$('#nmap_div').hide();
+			$('#nessus_xml_div').hide();
+			$('#qualys_xml_div').slideToggle();	
+				
+	}
+
+}
+
+</script>
+
+{% endblock %}

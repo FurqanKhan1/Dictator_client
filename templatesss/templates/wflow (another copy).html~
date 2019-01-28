@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% if crawl_obj %}
+    <h1>Vulnerable Workflows in scan_id {{ crawl_obj.id }}</h1>
+
+    {% for wf_obj, wflow in vwflows %}
+    <div class="col">
+        <div class="col s12 m6">
+          <div class="card red darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Workflow Number : {{ wf_obj.wflow_no }}</span>
+              
+              <ul>
+                 {% for item in wflow %}
+                  <li>
+                    <font color="black"><b>url</b></font>: {{ item.url}} <font color="black"><b> data:</b></font> {{item.data}}  <font color="black"><b>critical:</b> </font>True
+                  </li>
+
+                 {% endfor %}
+                  
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    {% endfor%}
+   
+
+    {% for wf_obj, wflow in nonvflows %}
+
+    <div class="col">
+        <div class="col s12 m6">
+          <div class="card grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title"> Workflow Number {{ wf_obj.wflow_no }}</span>
+              
+              <ul>
+                 {% for item in wflow %}
+                  <li>
+                 <font color="black"><b>url</b></font>: {{ item.url}} <font color="black"><b> data:</b></font> {{item.data}} <font color="black"><b>critical:</b> </font>{{item.critical}}
+                  </li>
+
+                 {% endfor %}
+                  
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    {% endfor%}
+   
+
+     
+    {% else %}
+      
+    <h1> No Vulnerable Workflows </h1>  
+
+    {% endif %}
+      

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content%}
+<div class="col-sm-12 col-md-12 main img-responsive" id="dashboard_areaa" style="background-color :white;color:black;background-repeat:repeat;height:100%">
+
+<div>
+    <div class="row"> 
+        <div class="">
+            <div class="sub-header"><h2><font color="cornflowerblue"><span class="glyphicon  glyphicon-user"></span>&nbsp;&nbsp;</font>Hello {{ request.user.first_name }}</h2>
+			</div>
+		<br>	
+		</div>
+		<div class="table-responsive" style="color:white">
+			<ul class="list-group">
+				<li class="list-group-item"><a href="#services_" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;&nbsp;<font size="6em">  What are the Services that have test cases mapped <font color="green">?? </font></font></a>
+				<div id="services_" class="collapse" style="font-size:2em;color:black">
+							<ul class="list-group">
+								{% if faq %}
+								{% for service in faq %}
+								<li class="list-group-item"><font color="green"><span class="glyphicon glyphicon-folder-close"></span></font>&nbsp;&nbsp;<font size="2em">{{service}}</font></li>
+								{% endfor %}
+								{% endif %}
+							</ul>
+				</li>			
+				<li class="list-group-item"><a href="{{video_url}}" style="text-decoration:none" data-toggle="collapse" ><font color ="orange" size="6em"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;&nbsp;</font><font size="6em">Do we have Viedo Tutorials for usage <font color="green">??</font> </font></a></li>
+			</ul>
+									
+			
+        </div>
+    </div>
+	<div class="row"></div>
+</div>
+</div>
+{% endblock %}

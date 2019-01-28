@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %} Reports {% if option_given %}- {{ project.project_name }}{% endif %} {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="dashboard_area">
+
+{% if crawl_list  %}
+
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <span class="glyphicon glyphicon-floppy-saved"></span> <strong> Please note!</strong> You can view the reports only if the project is not in 'In Progress' state.<br>Select the project from the drop down list whose report is to be viewed  and click upon View report.
+                    </div>
+
+                    <form class="form-horizontal" role="form" method="GET" action="/getworkflow">
+                        
+                        <!-- Set project name -->
+                        <div class="form-group">
+                            <label for="projectName" class="col-sm-2 control-label">Project Name</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" name="id" id="id">
+                                {% for item in crawl_list %}
+                                    <option value="{{item.id}}">Project Id{{item.id}}</option>                    
+                                {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- A neat blue button! -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-play-circle"></span> View Report</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                    {% else %}
+                    <p>No completed projects yet!</p>
+                    {% endif %}
+                    
+				<div id="center_loading" style="position:absolute;top:34%;left:27%;height:10%;width:600px;background-color:white;max-width:70%;display:none;border-style:solid;border-width:1px;">
+                    
+                    <br />
+                    <br />
+                    <div style="height :100px;">
+                    <img src ="/static/load.gif" style="position:relative ;left:260px;"/>
+                    <br />
+                    <font color="gray" size="6px" style="position:absolute  ;left:190px"><b>Loading......</b></font>
+                    <br />
+                    
+                    
+                    </div>
+                    <br />
+              
+                </div>
+					
+		</div>				 
+			
+
+{% endblock %}

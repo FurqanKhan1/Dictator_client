@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block css_links %}<link href="/static/css/dashboard.css" type="text/css" rel=stylesheet>
+{% endblock %}
+
+{% block body_content %}
+<div class="col-sm-12 col-md-12 main" id="dashboard_area">
+
+ <h1 class="sub-header"><font color="black">PROJECT DETAILS</font></h1>
+                    {% if error == 'False' %}
+                    <div class="table-responsive">
+                        <table class="table" id="my_table" style="font-size:100%;border-color:black">
+                            <thead>
+                                <tr style="color:yellow;background-color:black">
+									<th>S.No</th>
+                                    <th class="col-sm-1">Name</th>
+									<th>Initiated Date</th>
+									<th>Initiated Time</th>
+									<th>Scan Mode</th>`
+                                    <th>Discovery Status</th>
+                                    <th>Scanning Status</th>
+									<th>Action</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for project in data %}
+                                <tr>
+                                  <td style="background-color:white;color:black">{{ forloop.counter }}</td>
+                                  <td class="col-sm-2" style="color:black;background-color:#f8f8ff;word-break:break-all;">
+
+<a href="#float_{{project.id}}" id="scan_slider_{{project.id}}" style="text-decoration:none" data-toggle="collapse" ><font color ="red"><span class="glyphicon glyphicon-folder-open"></span></font>&nbsp;&nbsp;<font size="2em" color="black">{{ project.name }}</font></a>
+							<div id="float_{{project.id}}" class="collapse" style="font-size:1em">
+							<ul class="list-group">
+							<!---->
+								
+								<li class="list-group-item"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;<br><font size="2em">Project ID :{{project.id}}</font></li>
+								<li class="list-group-item" style="word-break:break-all;"><span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;IP(s)<br><font size="2em">{{project.IPrange}}</font></li>
+								<li class="list-group-item"><span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;PORT(s)<br><font size="2em">{{project.port_range}}</font></li>
+								<li class="list-group-item"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;SWITCH<br><font size="2em">{{project.switch}}</font></li>
+								
+								
+								
+							<!--</div>-->
+							</ul>
+							</div>
+
+
+</td>
+
+
+
+
+
+
+
+
+								  <td style="background-color:white"><span class="glyphicon glyphicon-calendar"></span>&nbsp;<font color="cornflowerblue">{{ project.Date }}</font></td>
+								  <td style="background-color:#f8f8ff"><span class="glyphicon glyphicon-time"></span>&nbsp;<font color="cornflowerblue">{{ project.Time }}</font></td>
+   								  <td style="color:black;background-color:white"><span class="glyphicon  glyphicon-info-sign"></span>&nbsp;{{ project.mode }}</td>
+                                  <td style="color:green;background-color:#f8f8ff">{{ project.project_status}}</td>
+                                  <td style="color:green;background-color:white">{{ project.project_status_exploits}}</td>
+									{% if project.project_status == 'complete' and project.project_status_exploits == 'complete' %} <td style="background-color:#f8f8ff"><form method="post" action="/Download/"><button class="btn btn-danger btn-sm">Download All</button><input type="hidden" id="project_id" name="project_id" value="{{ project.id }}"></input><input type="hidden" id="project_name" name="project_name" value="{{ project.name }}"></input> {% csrf_token %}</form><form method="get" action="/restore_state/"><button class="btn btn-success btn-sm">Analyse Tests</button><input type="hidden" id="project_id" name="project_id" value="{{ project.id }}"></input><input type="hidden" id="project_name" name="project_name" value="{{ project.name }}"></input></form></td>
+									{% elif project.project_status == 'complete' and project.project_status_exploits == 'incomplete' or project.project_status == 'processing' and project.project_status_exploits != 'paused' or project.project_status_exploits == 'processing' and project.project_status != 'paused'  %}
+                                    <td style="color:red;background-color:#f8f8ff"><a class="btn btn-primary" href="/restore_state?project_id={{ project.id }}&project_name={{ project.name }}">Ongoing</a><br>
+<br>
+{% if project.project_status == 'complete' and project.project_status_exploits == 'processing' %}
+<form method="post" action="/Download_im/"><button class="btn btn-primary btn-sm">Intermediate Results</button><input type="hidden" id="project_id" name="project_id" value="{{ project.id }}"></input><input type="hidden" id="project_name" name="project_name" value="{{ project.name }}"></input> {% csrf_token %}</form>
+{% endif %}
+</td>
+									{% elif project.project_status == 'paused' or project.project_status_exploits == 'paused' %}
+                                    <td style="background-color:#f8f8ff"><form method="post" action="/resume_scan/"><button class="btn btn-success btn-sm">Resume</button><input type="hidden" id="project_id" name="project_id" value="{{ project.id }}"></input><input type="hidden" id="project_name" name="project_name" value="{{ project.name }}"></input> {% csrf_token %}</form>
+									{% if project.project_status_exploits == 'paused' and  project.project_status == 'complete' and project.mode != 'concurrent' %}
+									<form method="get" action="/view_intermediate"><button class="btn btn-primary btn-sm">Analyse</button><input type="hidden" id="project_id" name="project_id" value="{{ project.id }}"></input><input type="hidden" id="project_name" name="project_name" value="{{ project.name }}"></input></form>
+									{% endif %}
+									</td>
+									{% else %}
+									<td style="background-color:#f8f8ff"><a href="#">Incomplete</a></td>
+									{% endif %} 
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><span class="glyphicon glyphicon-floppy-remove"></span><strong> Error!</strong> The Following Errors were detected :<br>{{ error_msg }}</div>
+                    {% endif %}
+                </div>
+            
+{% endblock %}
+
+{% block scripts %}
+        <script>
+			function init_search_table()
+							{
+								var table = $('#my_table').DataTable();
+						 	}
+
+							$(document).ready( function () {
+								//alert("helo");
+								init_search_table();
+							  //var table = $('#my_table').DataTable();
+								$('[data-toggle="tooltip"]').tooltip();
+							} );
+							
+        </script>
+{% endblock %}
+
